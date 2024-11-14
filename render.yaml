@@ -7,5 +7,6 @@ services:
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       php bin/console cache:clear
-    startCommand: |
-      php -S 0.0.0.0:8000 -t public
+    envVars:
+      - key: APP_ENV
+        value: prod
