@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <title>{% block title %}{% endblock %} | Fire Emblem Three Crowns : Grand Conquest</title>
+        <link rel="icon" href="https://cdn2.steamgriddb.com/icon/075a3a646faea7bfa9cd8b86c51a026b.png">
         {% block stylesheets %}
         {% endblock %}
 
@@ -12,6 +12,20 @@
         {% endblock %}
     </head>
     <body>
+    {% if app.user is not null and app.user.faction is not null %}
+        {% if app.user.faction.id == 1 %}
+        {% set accent = 'be' %}
+        {% elseif app.user.faction.id == 2 %}
+            {% set accent = 'bl' %}
+        {% elseif app.user.faction.id == 3 %}
+            {% set accent = 'gd' %}
+        {% else %}
+            {% set accent = 'aw' %}
+        {% endif %}
+    {% else %}
+        {% set accent = 'seiros' %}
+    {% endif %}
+    <body class="{{ accent }}-body">
         {% block body %}{% endblock %}
     </body>
 </html>

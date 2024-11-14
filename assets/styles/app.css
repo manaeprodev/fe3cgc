@@ -1,3 +1,461 @@
-body {
-    background-color: skyblue;
+.be-body {
+    background-color: rgb(102, 15, 15);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Black_Eagles_Banner.webp');
+    background-size: 10%;
+}
+
+.bl-body {
+    background-color: rgb(11, 41, 85);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Blue_Lions_Banner.webp');
+    background-size: 10%;
+}
+
+.gd-body {
+    background-color: rgb(145, 124, 7);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Golden_Deer_Banner.webp');
+    background-size: 10%;
+}
+
+.aw-body {
+    background-color: rgb(47, 21, 71);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Ashen_Wolves_Banner.webp');
+    background-size: 10%;
+}
+
+.seiros-body {
+    background-color: rgb(184, 184, 184);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Church_of_Seiros_Banner.webp');
+    background-size: 10%;
+}
+
+.blur {
+    filter: blur(5px); /* Applique un flou de 5px */
+}
+
+
+/* Style général */
+/* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Page container */
+.page-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Prend toute la hauteur de la fenêtre */
+}
+
+/* Carte */
+.map-container {
+    flex: 1; /* Prend tout l'espace restant */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* SVG (carte) */
+.map-container svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Menu latéral */
+.sidebar-menu {
+    width: 20%;
+    background-color: #2e2a47; /* Couleur de fond sombre rappelant des murs en pierre ou en bois */
+    color: #f4e1c1; /* Couleur dorée pour le texte */
+    font-family: 'Cinzel', serif; /* Police avec un style ancien (à importer de Google Fonts) */
+    border: 2px solid #d4af37; /* Bordure dorée autour du menu */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Ombre légère pour un effet 3D */
+}
+
+/* Liste des éléments du menu */
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* Style des liens */
+.sidebar-menu a {
+    color: #f4e1c1; /* Couleur dorée pour les liens */
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2); /* Légère couleur de fond sombre sur les liens */
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out; /* Transition douce pour l'effet hover */
+}
+
+.sidebar-menu a:hover {
+    background-color: #d4af37; /* Changer la couleur de fond au survol */
+    transform: scale(1.05); /* Zoom léger au survol */
+    color: #2e2a47; /* Couleur sombre du texte au survol */
+}
+
+/* Stylisation de la première ligne (logged in as) */
+.sidebar-menu li:first-child {
+    font-size: 1.5rem;
+    font-style: italic;
+    text-transform: uppercase; /* Style pour le texte "Logged in as ..." */
+    border-bottom: 1px solid #d4af37; /* Séparation dorée sous la première ligne */
+    padding-bottom: 5px;
+}
+
+/* Style de l'icône de déconnexion (🚪) */
+.sidebar-menu a[href="{{ path('app_logout') }}"] {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: bold;
+    color: #e60000; /* Rouge vif pour attirer l'attention sur le logout */
+    border: 2px solid #e60000;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.sidebar-menu a[href="{{ path('app_logout') }}"]:hover {
+    background-color: #e60000;
+    color: #fff; /* Inverser la couleur du texte au survol */
+}
+
+/* Ajouter un fond texturé ou une image de parchemin (facultatif) */
+.sidebar-menu {
+    background-image: url('/images/parchemin.jpg'); /* Ajoute une texture de fond parcheminé */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Styles pour mobile */
+@media (max-width: 768px) {
+    .page-container {
+        flex-direction: column;
+    }
+
+    .sidebar-menu {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .map-container {
+        flex: 1;
+        height: calc(100vh - 100px); /* Ajuste la hauteur pour le menu */
+    }
+}
+
+/* Style pour les champs de saisie (input) */
+.sidebar-menu input[type="email"],
+.sidebar-menu input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #d4af37; /* Bordure dorée */
+    border-radius: 5px;
+    background-color: rgba(46, 42, 71, 0.9); /* Fond sombre avec transparence */
+    color: #f4e1c1; /* Texte doré */
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.sidebar-menu input[type="email"]:focus,
+.sidebar-menu input[type="password"]:focus {
+    border-color: #d4af37; /* Mettre en évidence la bordure lors du focus */
+    outline: none;
+}
+
+/* Style pour la checkbox */
+.sidebar-menu input[type="checkbox"] {
+    accent-color: #d4af37; /* Couleur dorée pour la case à cocher */
+}
+
+/* Style pour le bouton de connexion */
+.sidebar-menu button[type="submit"] {
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: 2px solid #d4af37; /* Bordure dorée */
+    border-radius: 5px;
+    background-color: #2e2a47; /* Fond sombre */
+    color: #f4e1c1; /* Texte doré */
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.sidebar-menu button[type="submit"]:hover {
+    background-color: #d4af37; /* Changer le fond en doré au survol */
+    color: #2e2a47; /* Texte sombre au survol */
+    transform: scale(1.05); /* Zoom léger */
+}
+
+/* Style pour le texte "Remember me" */
+.sidebar-menu label {
+    color: #f4e1c1;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+}
+
+/* Style pour les champs de texte (TextType) */
+.sidebar-menu input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #d4af37; /* Bordure dorée */
+    border-radius: 5px;
+    background-color: rgba(46, 42, 71, 0.9); /* Fond sombre avec transparence */
+    color: #f4e1c1; /* Texte doré */
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.sidebar-menu input[type="text"]:focus {
+    border-color: #d4af37;
+    outline: none;
+}
+
+/* Style pour les menus déroulants (ChoiceType) */
+.sidebar-menu select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #d4af37; /* Bordure dorée */
+    border-radius: 5px;
+    background-color: rgba(46, 42, 71, 0.9); /* Fond sombre */
+    color: #f4e1c1; /* Texte doré */
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    appearance: none; /* Enlève le style par défaut du navigateur */
+}
+
+.sidebar-menu select:focus {
+    border-color: #d4af37;
+    outline: none;
+}
+
+/* Style pour le champ de téléchargement de fichiers (FileType) */
+.sidebar-menu input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 2px dashed #d4af37; /* Bordure dorée en pointillés */
+    border-radius: 5px;
+    background-color: rgba(46, 42, 71, 0.9); /* Fond sombre avec transparence */
+    color: #f4e1c1; /* Texte doré */
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.sidebar-menu input[type="file"]::file-selector-button {
+    background-color: #d4af37; /* Bouton doré */
+    color: #2e2a47; /* Texte sombre */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.sidebar-menu input[type="file"]::file-selector-button:hover {
+    background-color: #e6c300; /* Changement de couleur au survol */
+}
+
+/* Effet de survol */
+.sidebar-menu input[type="text"]:hover,
+.sidebar-menu select:hover,
+.sidebar-menu input[type="file"]:hover {
+    border-color: #e6c300; /* Changer la bordure au survol */
+}
+
+/* Styles généraux */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 900px;
+    padding: 20px;
+    background-color: rgba(46, 42, 71, 0.95); /* Couleur de fond sombre avec transparence */
+    border: 2px solid #d4af37;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    color: #f4e1c1;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+}
+
+/* Titre de la popup */
+.popup h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Texte d'introduction */
+.intro-text {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* Liste des leaders */
+.leaders {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Élément de leader */
+.leader-item {
+    text-align: center;
+    width: 200px;
+}
+
+/* Présentation du leader (lien avec image) */
+.leader-presentation {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.accent-1 {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Black_Eagles_Banner.webp');
+}
+
+.accent-2 {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Blue_Lions_Banner.webp');
+}
+
+.accent-3 {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/resources/Golden_Deer_Banner.webp');
+}
+
+/* Image du leader */
+.leader-presentation img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Effet au survol */
+.leader-presentation:hover {
+    transform: scale(1.1);
+}
+
+/* Nom du leader */
+.leader-item h2 {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: #d4af37;
+}
+
+/* Description du leader */
+.leader-item p {
+    font-size: 1rem;
+    color: #f4e1c1;
+}
+
+/* Styles responsive */
+@media (max-width: 768px) {
+    .popup {
+        width: 90%;
+    }
+
+    .leaders {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .leader-item {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+
+/* Style de base pour les path */
+path {
+    fill: #ff000000;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    stroke-dasharray: 5, 5; /* Garde la même bordure en pointillés */
+}
+
+/* Effet de survol */
+path:hover {
+    stroke-width: 2.5; /* Augmente légèrement l'épaisseur de la bordure pour un effet "pop" */
+    stroke-dasharray: 5, 5; /* Garde la même bordure en pointillés */
+    transform: scale(1.00); /* Légère augmentation de la taille de la zone au survol pour un effet de zoom */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Ombre douce pour un effet de profondeur */
+}
+
+.path-be {
+    fill: #ff000034;
+    stroke: #6d1212; /* Garde la bordure sombre */
+}
+
+.path-be:hover {
+    fill: #ff000079;
+}
+
+.path-bl {
+    fill: #003cff34;
+    stroke: #12206d; /* Garde la bordure sombre */
+}
+
+.path-bl:hover {
+    fill: #0011ff79;
+}
+
+.path-gd {
+    fill: #ffd00034;
+    stroke: #6d5f12; /* Garde la bordure sombre */
+}
+
+.path-gd:hover {
+    fill: #ffd90079;
+}
+
+.path-aw {
+    fill: #8400ff34;
+    stroke: #41126d; /* Garde la bordure sombre */
+}
+
+.path-aw:hover {
+    fill: #6200ff79;
 }

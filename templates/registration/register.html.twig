@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+<div class="page-container">
+    <div class="map-container blur">
+        {{ include('resources/fodlan.svg') }}
+    </div>
+    <nav class="sidebar-menu">
+        <ul>
+            <li><h1>Register now</h1></li>
+            <li>{{ form_errors(registrationForm) }}</li>
+            <li>{{ form_start(registrationForm) }}</li>
+            <li>{{ form_row(registrationForm.email) }}
+            <li>{{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+            </li>
+            <li>{{ form_row(registrationForm.confirmPassword) }}</li><p style="font-style: italic;">Your email will be used to login.</p></li><br>
+            <li>{{ form_row(registrationForm.username) }}</li>
+
+            <li>{{ form_row(registrationForm.avatar) }}</li>
+            <li>{{ form_row(registrationForm.title) }}</li>
+            <li>{{ form_row(registrationForm.agreeTerms) }}</li>
+            <li><button type="submit" class="btn">Register</button></li>
+            {{ form_end(registrationForm) }}
+        </ul>
+        <a style="text-align:center; margin: 0 auto;" href="{{ path('app_login') }}">Already have an account? Log in now!</a>
+    </nav>
+</div>
+{% endblock %}

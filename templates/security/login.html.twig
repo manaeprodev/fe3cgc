@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<form method="post">
+    <div class="page-container">
+        <div class="map-container blur">
+            {{ include('resources/fodlan.svg') }}
+        </div>
+        <nav class="sidebar-menu">
+            <ul>
+                {% if error %}
+                <li><div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div></li>
+                {% endif %}
+                <li><h1 class="h3 mb-3 font-weight-normal">Please sign in</h1></li>
+                <li><label for="inputEmail">Email</label></li>
+                <li><input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus></li>
+                <li><label for="inputPassword">Password</label></li>
+                <li><input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required></li>
+                <li><div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Remember me
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <button class="btn btn-lg btn-primary" type="submit">
+                        Sign in
+                    </button>
+                </li>
+            </ul>
+            <a style="text-align:center; margin: 0 auto;" href="{{ path('app_register') }}">No account? Register now!</a>
+                <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}">
+        </nav>
+    </div>
+</form>
+{% endblock %}

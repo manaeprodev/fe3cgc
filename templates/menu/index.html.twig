@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+{% if app.user.faction.id == 1 %}
+    {% set accent = 'be' %}
+{% elseif app.user.faction.id == 2 %}
+    {% set accent = 'bl' %}
+{% elseif app.user.faction.id == 3 %}
+    {% set accent = 'gd' %}
+{% else %}
+    {% set accent = 'aw' %}
+{% endif %}
+
+<div class="page-container">
+    <div class="map-container">
+        {{ include('resources/fodlan.svg') }}
+    </div>
+    <nav class="sidebar-menu">
+        <ul>
+            <li>Logged in as : {{ app.user.username }}</li>
+            <li><a href="#">My Faction : {{ app.user.faction.name }}</a></li>
+            <li><a href="#">Leaderboard</a></li>
+            <li><a href="#">How it works...</a></li>
+            <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
+        </ul>
+    </nav>
+</div>
+    <script>
+        // Ajouter des interactions aux zones
+        const paths = document.querySelectorAll('path');
+
+        paths.forEach(path => {
+            path.addEventListener('click', () => {
+                const name = path.getAttribute('inkscape:label');
+                const description = path.getAttribute('id');
+                alert(`Vous avez cliqué sur : ${name}\nDescription : ${description}`);
+            });
+        });
+    </script>
+{% endblock %}

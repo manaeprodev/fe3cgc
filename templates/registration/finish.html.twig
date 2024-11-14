@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choose your faction{% endblock %}
+{% block body %}
+<div class="page-container blur">
+    <div class="map-container">
+        {{ include('resources/fodlan.svg') }}
+    </div>
+    <nav class="sidebar-menu">
+        <ul>
+            <li>Logged in as : UNKNOWN</li>
+            <li><a href="#">My Faction : UNKNOWN</a></li>
+            <li><a href="#">Leaderboard</a></li>
+            <li><a href="#">How it works...</a></li>
+            <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
+        </ul>
+    </nav>
+</div>
+<div class="popup">
+    <h1>CHOOSE YOUR HOUSE</h1>
+    <p>Greetings and welcome to Fódlan. A country ravaged by war between three countries. As part of this journey, you must choose a country to fight for.
+    Choose well, this action cannot be undone.</p><br>
+    <ul class="leaders">
+    {% for house in houses %}
+    <li class="leader-item">
+        <a class="leader-presentation accent-{{ house.id }}" href={{ path('choose_faction', {'factionId': house.id, 'userId': userId}) }}><img src="/resources/{{ house.leaderAvatar }}"></a>
+        <h2>{{ house.name }}</h2><br>
+        <p>{{ house.description }}</p>
+    <li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
