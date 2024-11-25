@@ -16,6 +16,26 @@ class TerritoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Territory::class);
     }
 
+    public function countTerritories(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.faction', 'f')
+            ->select('f.id AS faction_id, COUNT(t.id) AS count')
+            ->groupBy('f.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getTerritoryByName(string $name): Territory
+    {
+
+        return $this->createQueryBuilder('t')
+            ->where('t.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
     //    /**
     //     * @return Territory[] Returns an array of Territory objects
     //     */

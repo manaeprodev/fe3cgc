@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Title;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -84,20 +87,21 @@ class RegistrationFormType extends AbstractType
             'required' => false,
             'attr' => ['accept' => 'image/*'],
         ])
-        ->add('title', ChoiceType::class, [
-            'label' => 'Title',
-            'choices' => [
-                'Cavalier' => 'cavalier',
-                'Warrior' => 'warrior',
-                'Knight' => 'knight',
-                'Cleric' => 'cleric',
-                'Strategist' => 'strategist',
-                'Merchant' => 'merchant',
-            ],
-            'placeholder' => 'No title', // Texte par défaut pour la sélection vide
-            'required' => false, // Permet de ne pas sélectionner de valeur
-            'empty_data' => null, // Définit la valeur par défaut à NULL
-        ])        
+        ->add('title', EntityType::class, [
+            'label' => 'Class (Gives a small buff to your army)',
+            'class' => Title::class,
+            'choice_label' => function (Title $title) {
+                return $title->getName() . " (" . $title->getMiniLabel() . ")";
+            },
+            'required' => false,
+            'placeholder' => 'None',
+            'empty_data' => null,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('t')
+                    ->where('t.level = :level')
+                    ->setParameter('level', 1);
+                },
+        ])
     ;
     }
 

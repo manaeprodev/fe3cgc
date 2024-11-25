@@ -46,8 +46,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $money = 1500;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $title = null;
+    #[ORM\ManyToOne(targetEntity: Title::class)]
+    #[ORM\JoinColumn(name: "title_id", referencedColumnName: "id", nullable: true)]
+    private ?Title $title = null;
 
     #[ORM\Column]
     private ?bool $firstCo = true;
@@ -55,6 +56,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Faction::class)]
     #[ORM\JoinColumn(name: "faction_id", referencedColumnName: "id", nullable: true)]
     private ?Faction $faction = null;
+
+    #[ORM\ManyToOne(targetEntity: Territory::class)]
+    #[ORM\JoinColumn(name: "position_territory_id", referencedColumnName: "id", nullable: true)]
+    private ?Territory $territory = null;
 
     public function getId(): ?int
     {
@@ -179,12 +184,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): ?Title
     {
         return $this->title;
     }
 
-    public function setTitle(?string $title): static
+    public function setTitle(?Title $title): static
     {
         $this->title = $title;
 
@@ -208,9 +213,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->faction;
     }
 
-    public function setLunarInsignia(?Faction $faction): static
+    public function setFaction(?Faction $faction): static
     {
         $this->faction = $faction;
+
+        return $this;
+    }
+
+    public function getTerritory(): ?Territory
+    {
+        return $this->territory;
+    }
+
+    public function setTerritory(?Territory $territory): static
+    {
+        $this->territory = $territory;
 
         return $this;
     }

@@ -34,9 +34,16 @@ class Territory
     #[ORM\JoinColumn(name: "faction_id", referencedColumnName: "id", nullable: true)]
     private ?Faction $faction = null;
 
+    /**
+     * @var Collection<int, Battle>
+     */
+    #[ORM\OneToMany(targetEntity: Battle::class, mappedBy: 'territoryId')]
+    private Collection $battles;
+
     public function __construct()
 {
     $this->neighboringTerritories = new ArrayCollection();
+    $this->battles = new ArrayCollection();
 }
 
     public function getId(): ?int
@@ -98,6 +105,36 @@ class Territory
     public function setFaction(?Faction $faction): static
     {
         $this->faction = $faction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Battle>
+     */
+    public function getBattles(): Collection
+    {
+        return $this->battles;
+    }
+
+    public function addBattle(Battle $battle): static
+    {
+        if (!$this->battles->contains($battle)) {
+            $this->battles->add($battle);
+            $battle->setTerritoryId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBattle(Battle $battle): static
+    {
+        if ($this->battles->removeElement($battle)) {
+            // set the owning side to null (unless already changed)
+            if ($battle->getTerritoryId() === $this) {
+                $battle->setTerritoryId(null);
+            }
+        }
 
         return $this;
     }

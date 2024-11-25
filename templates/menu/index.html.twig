@@ -14,30 +14,391 @@
     {% set accent = 'aw' %}
 {% endif %}
 
+<input type="hidden" id="user-id" name="hiddenUsername" value="{{ app.user.id }}">
+<input type="hidden" id="username" name="hiddenUsername" value="{{ app.user.username }}">
+<input type="hidden" id="user-renown" name="hiddenUsername" value="{{ app.user.renown }}">
+<input type="hidden" id="user-faction-id" name="hiddenUserFactionId" value="{{ app.user.faction.id }}">
+<input type="hidden" id="selected-territory-id" name="hiddenUsername" value="">
+
 <div class="page-container">
     <div class="map-container">
-        {{ include('resources/fodlan.svg') }}
+        {{ include('resources/fodlan.svg.twig', {'territories': territories}) }}
     </div>
     <nav class="sidebar-menu">
         <ul>
-            <li>Logged in as : {{ app.user.username }}</li>
-            <li><a href="#">My Faction : {{ app.user.faction.name }}</a></li>
-            <li><a href="#">Leaderboard</a></li>
+            <li>Logged in as : <img class="user-icon" src="/uploads/{{ app.user.avatar }}"> {{ app.user.username }}</li>
+            <li>
+                <img class="leader-presentation" src="/uploads/{{ app.user.avatar }}">
+                <p title="Gold">🪙 {{ app.user.money }}</p>
+                <p title="Renown">✨ {{ app.user.renown }}</p><br>
+                <p title="{{ app.user.title.name | default('No class found')  }} : {{ app.user.title.bonusLabel | default('')}}">
+                    Class : {{ app.user.title.name | default('None')  }}
+                    {% if app.user.title is not null %}
+                        {% if app.user.title.level == 1 %}
+                        ⭐
+                        {% elseif app.user.title.level == 2 %}
+                        ⭐⭐
+                        {% elseif app.user.title.level == 3 %}
+                        ⭐⭐⭐
+                        {% endif %}
+                    {% endif %}
+                </p><br>
+            </li>
+            <li><a href="#">My Unit</a></li>
+            <li><a href="#">My Faction : {{ app.user.faction.name }}</a></li><br>
+            <li>
+        </ul>
+        <ul>
+            <li><p>🗺️ State of Fódlan </p></li>
+            <li>
+                <table>
+                    <tr>
+                        <td><p style="font-size: 17px;" class="adrestia {% if app.user.faction.id == 1 %}my-faction-be{% endif %}">🔴 Adrestia : {{ (count[0].count / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;"  class="faerghus {% if app.user.faction.id == 2 %}my-faction-bl{% endif %}">🔵 Faerghus : {{ (count[1].count / 58 * 100) | round }}%</p></td>
+                    </tr>
+                    <tr>
+                        <td><p style="font-size: 17px;"  class="leicester  {% if app.user.faction.id == 3 %}my-faction-gd{% endif %}">🟡 Leicester : {{ (count[2].count / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;">🟣 Others : {{ ((count[3].count + count[4].count) / 58 * 100) | round }}%</p></td>
+                </table>
+            </li>
+            <li class="image-container">
+                <img class="leader-presentation-tiny" src="/resources/{{ app.user.faction.leaderAvatar }}"><br>
+                <p id="leaderSpeech">{{ app.user.faction.leaderSpeech }}</p>
+            </li>
+        </ul>
+        <ul>
+            <li><p>🛠️ Miscellaneous</p></li>
+            <li><a href="{{ path('app_user_index') }}">Leaderboard</a></li>
             <li><a href="#">How it works...</a></li>
             <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
         </ul>
     </nav>
 </div>
+<div id="loading-spinner" class="spinner"></div>
+<div class="popup" id="popup">
+    <h1 id="territory-name"></h1>
+    <p id="conquered-by"></p>
+    <p id="rewards">Prize : </p>
+    <p id="neighboring-territories">Neighboring Territories :</p>
+    <ul id="neighbors-list">
+    </ul>
+    <p id="success-rate"></p>
+    <p id="defending-units"></p>
+    <ul id="defenders-list">
+    </ul>
+    <p id="attacking-units"></p>
+    <ul id="attackers-list">
+    </ul>
+    <button id="action"></button>
+    <p id="cannot-attack" hidden>You cannot attack this territory.</p>
+    <button id="cancelButton">CANCEL</button>
+    <p id="new-success-rate"></p>
+</div>
+
+<div class="popup" id="popup-confirm">
+    <h1>ACTION SAVED!</h1>
+    <button id="ok-confirm">OK</button>
+</div>
+<meta name="csrf-token" content="{{ csrf_token('menu_status') }}">
+
     <script>
         // Ajouter des interactions aux zones
         const paths = document.querySelectorAll('path');
+        const tooltip = document.createElement('div');
+        const popup = document.getElementById("popup");
+        const popupConfirm = document.getElementById("popup-confirm");
+        const cannotAtk = document.getElementById("cannot-attack");
+        const defList = document.getElementById("defenders-list");
+        const atkList = document.getElementById("attackers-list");
+        const atkUnits = document.getElementById("attacking-units");
+        const defUnits = document.getElementById("defending-units");
+        const okConfirm = document.getElementById("ok-confirm");
+        const cancel = document.getElementById('cancelButton');
+        const userId = document.getElementById('user-id').value;
+        const userFactionId = document.getElementById('user-faction-id').value;
+        const userRenown = Number(document.getElementById('user-renown').value);
+        const selectedTerritoryId = document.getElementById('selected-territory-id')
+        const actionButton = document.getElementById('action');
+        const showPopupButton = document.getElementById('showPopupButton');
+        const spinner = document.getElementById("loading-spinner");
+        const successRateButton = document.getElementById("success-rate");
+        const newSuccessRateButton = document.getElementById("new-success-rate");
+        const rewards = document.getElementById("rewards");
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        var hasConqueredNeighbors = false;
 
+        tooltip.style.position = 'absolute';
+        tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        tooltip.style.color = 'white';
+        tooltip.style.padding = '5px';
+        tooltip.style.borderRadius = '5px';
+        tooltip.style.pointerEvents = 'none';  // Pour éviter que le tooltip interagisse avec le curseur
+        tooltip.style.display = 'none'; // Initialement caché
+        document.body.appendChild(tooltip)
+  ;
         paths.forEach(path => {
             path.addEventListener('click', () => {
+                
                 const name = path.getAttribute('inkscape:label');
-                const description = path.getAttribute('id');
-                alert(`Vous avez cliqué sur : ${name}\nDescription : ${description}`);
+                const money = path.getAttribute('prize');
+                const renown = path.getAttribute('renown');
+                
+
+                $.ajax({
+                    url: '/menu/status',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRF-Token': csrfToken,
+                    },
+                    data: JSON.stringify({ name: name }),
+                    success: function(response) {
+                            atkUnits.innerHTML = "";
+                            defUnits.innerHTML = "";
+                            selectedTerritoryId.value = "";
+                            rewards.innerHTML="Prize : ";
+                            successRateButton.innerHTML="";
+                            newSuccessRateButton.innerHTML="";
+                            cannotAtk.setAttribute("hidden", "");
+                            actionButton.removeAttribute("hidden")
+                            actionButton.classList.remove("blue", "red");
+                            console.log(response);
+                            const generatedItems = document.querySelectorAll(".generated-n");
+                            generatedItems.forEach((item) => item.remove());
+                            var message = response.message;
+                            var name = response.name;
+                            var territoryId = response.id;
+
+                            selectedTerritoryId.value = territoryId;
+                            var factionId = response.factionId;
+                            var neighborsData = response.neighborsData;
+                            var money = response.money;
+                            var renown = response.renown;
+                            var successRate = response.successRate;
+                            var defendersData = response.defenders;
+                            var attackersData = response.attackers;
+
+                            let territoryElement = document.getElementById("territory-name");
+                            let conqueredByElement = document.getElementById("conquered-by");
+                            let neighborsList = document.getElementById("neighbors-list");
+
+                            var isDefIdPresent = defendersData.some(defender => defender.id == userId);
+                            var isAtkIdPresent = attackersData.some(attacker => attacker.id == userId);
+                            rewards.innerHTML += "<b title='Gold'>🪙" + money + "</b> | <b title='Renown'>✨" + renown + "</b>";
+
+                            switch (factionId) {
+                                case 1:
+                                    var faction = "The Black Eagles"
+                                    break;
+                                case 2:
+                                    var faction = "The Blue Lions"
+                                    break;
+                                case 3:
+                                    var faction = "The Golden Deer"
+                                    break;
+                                case 4:
+                                    var faction = "The Ashen Wolves"
+                                    break;
+                                case 5:
+                                    var faction = "The Church of Seiros"
+                                    break;
+                                case 6:
+                                    var faction = "N/A"
+                                    break;
+                                default:
+                                    var faction = "Error : Unknown"
+                            }
+                            conqueredByElement.innerHTML = "Conquered by <b class='conquered-label-" + factionId + "'>" + faction + "</b>";
+                            territoryElement.textContent = name.toUpperCase() + " TERRITORY";
+                            
+                            hasConqueredNeighbors = false;
+
+                            neighborsData.forEach(function(neighbor) {
+                                // Créer un nouvel élément <li>
+                                let li = document.createElement("li");
+
+                                // Ajouter du contenu à l'élément <li>
+                                li.textContent = neighbor.name;
+                                li.classList.add(`generated-n`);
+                                li.classList.add(`neighbor-` + neighbor.factionId);
+                                // Ajouter l'élément <li> à la liste <ul>
+                                neighborsList.appendChild(li);
+
+                                if(neighbor.factionId == userFactionId) {
+                                    hasConqueredNeighbors = true;
+                                }
+                            });
+
+                            defendersData.forEach(function(defender) {
+                                let li = document.createElement("li");
+
+                                li.innerHTML = "<img class='tiny-avatar house-accent-" + defender.factionId + "' src='/uploads/" + 
+                                defender.avatar + "' alt='" + 
+                                defender.username + "' title='" + 
+                                defender.username + " : " + 
+                                defender.title + " (" + defender.miniLabel + ")'>";
+                                li.classList.add(`generated-n`);
+                                li.classList.add('inline-list');
+                                defList.appendChild(li);
+                            });
+
+                            attackersData.forEach(function(attacker) {
+                                let li = document.createElement("li");
+
+                                li.innerHTML = "<img class='tiny-avatar house-accent-" + attacker.factionId + "' src='/uploads/" + 
+                                attacker.avatar + "' alt='" + 
+                                attacker.username + "' title='" + 
+                                attacker.username + " : " + 
+                                attacker.title + " (" + attacker.miniLabel + ")'>";
+                                li.classList.add(`generated-n`);
+                                li.classList.add('inline-list');
+                                atkList.appendChild(li);
+                            });
+
+                            if(attackersData.length >= 1) {
+                                atkUnits.innerHTML = "Attacking units :"
+                            }
+
+                            if(defendersData.length >= 1) {
+                                defUnits.innerHTML = "Defending units :"
+                            }
+
+
+                            var attackersRenown = response.attackersRenown;
+                            var totalBonus = response.totalBonus;
+                            var defendersRenown = response.defendersRenown;
+                            var defCoef = response.defCoef;
+                            var terCoef = response.terCoef;
+
+                            var finalAtkRate = 100 * ( ((attackersRenown+userRenown)*totalBonus) / ( (defendersRenown*defCoef)+(renown*terCoef) ) );
+                            var finalDefRate = 100 * ( (attackersRenown*totalBonus) / ( ((defendersRenown+userRenown)*defCoef)+(renown*terCoef) ) );
+
+                            if(finalAtkRate >= 100) {
+                                finalAtkRate = 100;
+                            }
+
+                            if(finalDefRate >= 100) {
+                                finalDefRate = 100;
+                            }
+                            
+                            var prcColorSR = getColor(successRate);
+                            var prcColorNewAtkSR = getColor(finalAtkRate);     
+                            var prcColorNewDefSR = getColor(finalDefRate);                       
+
+                            if(factionId == userFactionId) {
+                                actionButton.classList.add('blue');
+                                actionButton.innerHTML = "🛡️ DEFEND!";
+                                successRateButton.innerHTML = "Attackers success rate : <b class='" + prcColorSR + "'>" + successRate + "%</b>";
+
+                                if(!isDefIdPresent) {
+                                    newSuccessRateButton.innerHTML = "New rate after your action : <del>" + successRate + "%</del> <b></b> ➡️ <b class='" + prcColorNewDefSR + "'>" + finalDefRate.toFixed(2) + "%";
+                                } else {
+                                    newSuccessRateButton.innerHTML = "";
+                                }
+                            } else if (hasConqueredNeighbors) {
+                                actionButton.classList.add('red')
+                                actionButton.innerHTML = "⚔️ ATTACK!";
+                                successRateButton.innerHTML = "Attackers success rate : <b class='" + prcColorSR + "'>" + successRate + "%</b>";
+
+                                if(!isAtkIdPresent) {
+                                    newSuccessRateButton.innerHTML = "New rate after your action : <del> " + successRate + "%</del>  <b></b> ➡️ <b class='" + prcColorNewAtkSR + "'>" + finalAtkRate.toFixed(2) + "%</b>";
+                                } else {
+                                    newSuccessRateButton.innerHTML = "";
+                                }
+                            } else {
+                                actionButton.setAttribute("hidden", "");
+                                cannotAtk.removeAttribute("hidden");
+                            }
+
+                    },
+                    error: function(xhr, status, error) {
+                        var message = "Message : " + error;
+                    }
+                });
+                function showLoadingAndPopup() {
+                    // Afficher le rond de chargement
+                    spinner.style.display = "block";
+
+                    // Après 2 secondes, masquer le rond de chargement et afficher la popup
+                    setTimeout(() => {
+                        spinner.style.display = "none"; // Masquer le rond de chargement
+                        popup.classList.add("visible"); // Appliquer l'animation de fondu
+                    }, 1000);
+                }
+                showLoadingAndPopup();
+            });
+            path.addEventListener('mouseenter', (e) => {
+                const name = path.getAttribute('inkscape:label');
+                // Mettre à jour le contenu du tooltip
+                tooltip.textContent = `${name} Territory`;
+                
+                // Positionner le tooltip près du curseur
+                tooltip.style.left = `${e.pageX + 10}px`; // Décaler légèrement le tooltip du curseur
+                tooltip.style.top = `${e.pageY + 10}px`;  // Décaler légèrement le tooltip du curseur
+                
+                // Afficher le tooltip
+                tooltip.style.display = 'block';
+            });
+            path.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
             });
         });
+
+        cancel.addEventListener('click', () => {
+            popup.classList.remove("visible");
+            actionButton.classList.remove("blue", "red");
+        });
+
+        okConfirm.addEventListener('click', () => {
+            popupConfirm.classList.remove("visible");
+        });
+
+        actionButton.addEventListener('click', () => {
+            if (actionButton.classList.contains('blue') && !actionButton.classList.contains('red')) {
+                var action = "defend";
+            } else if (actionButton.classList.contains('red') && !actionButton.classList.contains('blue')) {
+                var action = "attack";
+            } else {
+                console.log('Illegal state. You will be cut through!');
+                return 0;
+            }
+
+            $.ajax({
+                url: '/action',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-Token': csrfToken,
+                    'Action': action
+                },
+                data: JSON.stringify({ userId: userId, territoryId: selectedTerritoryId.value, userRenown: userRenown, userFactionId: userFactionId }),
+                success: function(response) {
+                    console.log(response);
+                    popupConfirm.classList.add("visible");
+                    popup.classList.remove("visible");
+                    actionButton.classList.remove("blue", "red");
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    popup.classList.remove("visible");
+                    actionButton.classList.remove("blue", "red");
+                }
+
+            });
+        });
+
+    function getColor(successRate) {
+        if (successRate >= 75) {
+            return "green-prc";
+        } else if (successRate >= 50) {
+            return "yellow-prc";
+        } else if (successRate >= 25) {
+            return "orange-prc";
+        } else {
+            return "red-prc";
+        }
+    }
     </script>
 {% endblock %}

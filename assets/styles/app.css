@@ -340,6 +340,22 @@
 /* Présentation du leader (lien avec image) */
 .leader-presentation {
     display: block;
+    position: absolute;
+    right: 10px;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.leader-presentation-tiny {
+    display: block;
+    left: 0;
     width: 150px;
     height: 150px;
     margin: 0 auto;
@@ -349,6 +365,16 @@
     background-size: cover;
     background-position: center;
     transition: transform 0.3s ease-in-out;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
+#leaderSpeech {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: #d4af37;
+    margin-right: 30px;
+    margin-left:30px;
 }
 
 .accent-1 {
@@ -372,7 +398,7 @@
 }
 
 /* Effet au survol */
-.leader-presentation:hover {
+.leader-presentation:hover, .leader-presentation-tiny:hover {
     transform: scale(1.1);
 }
 
@@ -424,38 +450,302 @@ path:hover {
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Ombre douce pour un effet de profondeur */
 }
 
-.path-be {
+.t-1 {
     fill: #ff000034;
     stroke: #6d1212; /* Garde la bordure sombre */
 }
 
-.path-be:hover {
+.t-1:hover {
     fill: #ff000079;
 }
 
-.path-bl {
+.t-2 {
     fill: #003cff34;
     stroke: #12206d; /* Garde la bordure sombre */
 }
 
-.path-bl:hover {
+.t-2:hover {
     fill: #0011ff79;
 }
 
-.path-gd {
+.t-3 {
     fill: #ffd00034;
     stroke: #6d5f12; /* Garde la bordure sombre */
 }
 
-.path-gd:hover {
+.t-3:hover {
     fill: #ffd90079;
 }
 
-.path-aw {
+.t-4 {
     fill: #8400ff34;
     stroke: #41126d; /* Garde la bordure sombre */
 }
 
-.path-aw:hover {
+.t-4:hover {
     fill: #6200ff79;
+}
+
+.t-5 {
+    fill: #ffffff34;
+    stroke: #7a7a7a; /* Garde la bordure sombre */
+}
+
+.t-5:hover {
+    fill: #ffffff79;
+}
+
+.t-6 {
+    fill: #12521b34;
+    stroke: #126d1e; /* Garde la bordure sombre */
+}
+
+.t-6:hover {
+    fill: #00ff2a79;
+}
+
+.user-icon{
+    max-height: 10%;
+    max-width: 10%;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    vertical-align: middle;
+}
+
+.my-faction-be{
+    font-weight: bold;
+    color: rgb(255, 191, 191);
+}
+
+.my-faction-bl{
+    font-weight: bold;
+    color: rgb(191, 206, 255);
+}
+
+.my-faction-gd{
+    font-weight: bold;
+    color: rgb(255, 240, 191);
+}
+
+.spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #d4af37;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Animation de rotation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Styles de la popup */
+.popup {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    position: fixed;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+/* Classe pour afficher la popup */
+.popup.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.popup p {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+/* Titre du territoire */
+#territory-name {
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Conquérant */
+#conquered-by {
+    font-size: 22px;
+    text-align: center;
+}
+
+/* Liste des territoires voisins */
+#neighboring-territories {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#neighbors-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Style des éléments de la liste */
+#neighbors-list li {
+    font-size: 14px;
+    padding: 5px;
+    margin-left: 37%;
+    margin-right: 37%;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+/* Style au survol des éléments de la liste */
+#neighbors-list li:hover {
+    background-color: #f0f0f023;
+}
+
+/* Bouton d'action */
+#action {
+    width: 35%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Bouton annuler */
+#cancelButton, #ok-confirm {
+    width: 35%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a3a3a3;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Bouton annuler au survol */
+#cancelButton:hover, #ok-confirm:hover {
+    background-color: #7a7a7a;
+}
+
+.red {
+    background-color: #940f0f;
+}
+
+.blue {
+    background-color: #317ace;
+}
+
+.red:hover {
+    background-color: #c70000;
+}
+
+.blue:hover {
+    background-color: #1c4686;
+}
+
+.green-prc {
+    color:#40c252
+}
+
+.orange-prc {
+    color:#ce7d14
+}
+
+.yellow-prc {
+    color:#cfc426
+}
+
+.red-prc {
+    color:#d32828
+}
+
+.neighbor-1, .conquered-label-1 {
+    color: rgb(253, 130, 130);
+}
+
+.neighbor-2, .conquered-label-2 {
+    color: rgb(130, 169, 253);
+}
+
+.neighbor-3, .conquered-label-3 {
+    color: rgb(253, 224, 130);
+}
+
+.neighbor-4, .conquered-label-4 {
+    color: rgb(157, 130, 253);
+}
+
+.neighbor-5, .conquered-label-5 {
+    color: rgb(206, 206, 206);
+}
+
+.neighbor-6, .conquered-label-6 {
+    color: rgb(151, 253, 130);
+}
+
+.tiny-avatar {
+    height: 70px;
+    width: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #2e2a47;
+}
+
+.inline-list {
+    display: inline;
+    margin: 0; /* Supprime les marges par défaut */
+    top: -10px;
+}
+
+.inline-list:not(:first-child) {
+    margin-left: -20px; /* Les éléments suivants se chevauchent */
+}
+
+#attackers-list, #defenders-list {
+    list-style: none;
+}
+
+.house-accent-1 {
+    border: 3px solid #b93131;
+}
+
+.house-accent-2 {
+    border: 3px solid #3980dd;
+}
+
+.house-accent-3 {
+    border: 3px solid #d4af37;
+}
+
+.house-accent-4 {
+    border: 3px solid #6637d4;
+}
+
+.house-accent-5 {
+    border: 3px solid #b9b9b9;
+}
+
+.house-accent-6 {
+    border: 3px solid #3cd437;
 }

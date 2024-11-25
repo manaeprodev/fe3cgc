@@ -48,6 +48,34 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     }
 
+    public function getUnitsByTerritoryId(int $territoryId)
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.territory', 't')
+            ->join('u.faction', 'f')
+            ->join('u.title', 'ti')
+            ->select('u.id, u.username, u.avatar, u.renown, f.id AS factionId, ti.id AS titleId, ti.name AS title, ti.level, ti.miniLabel, t.id AS territoryId')
+            ->andWhere('t.id = :territoryId')
+            ->setParameter('territoryId', $territoryId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function positionUnit(int $userId, int $territoryId)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'UPDATE App\Entity\User u
+             SET u.territory = :newTerritoryId
+             WHERE u.id = :userId'
+        );
+
+        $query->setParameter('newTerritoryId', $territoryId);
+        $query->setParameter('userId', $userId);
+
+        $result = $query->execute();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
