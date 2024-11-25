@@ -291,7 +291,7 @@
 }
 
 /* Styles généraux */
-.popup {
+.popup, .popup-pres {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -309,7 +309,7 @@
 }
 
 /* Titre de la popup */
-.popup h1 {
+.popup h1, .popup-pres h1 {
     font-size: 2rem;
     margin-bottom: 10px;
     color: #d4af37;
@@ -324,10 +324,13 @@
 
 /* Liste des leaders */
 .leaders {
+    list-style-type: none; /* Supprime les puces par défaut */
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     gap: 20px;
+    padding: 0;
+    margin: 0;
     flex-wrap: wrap;
 }
 
@@ -345,6 +348,20 @@
     width: 100px;
     height: 100px;
     margin: 0 auto;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.leader-presentation-pres {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    padding: 0;
     border-radius: 50%;
     border: 2px solid #d4af37;
     
@@ -390,7 +407,7 @@
 }
 
 /* Image du leader */
-.leader-presentation img {
+.leader-presentation img, .leader-presentation-pres img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -398,7 +415,7 @@
 }
 
 /* Effet au survol */
-.leader-presentation:hover, .leader-presentation-tiny:hover {
+.leader-presentation:hover, .leader-presentation-tiny:hover, .leader-presentation-pres:hover {
     transform: scale(1.1);
 }
 
@@ -417,7 +434,7 @@
 
 /* Styles responsive */
 @media (max-width: 768px) {
-    .popup {
+    .popup, .popup-pres {
         width: 90%;
     }
 

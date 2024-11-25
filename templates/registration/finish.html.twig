@@ -16,14 +16,14 @@
         </ul>
     </nav>
 </div>
-<div class="popup">
+<div class="popup-pres">
     <h1>CHOOSE YOUR HOUSE</h1>
     <p>Greetings and welcome to Fódlan. A country ravaged by war between three countries. As part of this journey, you must choose a country to fight for.
     Choose well, this action cannot be undone.</p><br>
     <ul class="leaders">
     {% for house in houses %}
     <li class="leader-item">
-        <a class="leader-presentation accent-{{ house.id }}" href={{ path('choose_faction', {'factionId': house.id, 'userId': userId}) }}><img src="/resources/{{ house.leaderAvatar }}"></a>
+        <a class="leader-presentation-pres accent-{{ house.id }}" href={{ path('choose_faction', {'factionId': house.id, 'userId': userId}) }}><img src="/resources/{{ house.leaderAvatar }}"></a>
         <h2>{{ house.name }}</h2><br>
         <p>{{ house.description }}</p>
     <li>

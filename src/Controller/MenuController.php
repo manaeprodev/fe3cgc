@@ -6,6 +6,7 @@ use App\Repository\TerritoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +23,7 @@ class MenuController extends AbstractController
         $userId = $user->getId();
 
         if($user->isFirstCo()) {
-            return $this->redirectToRoute('/register/finish/' . $userId . '/1');
+            return new RedirectResponse('/register/finish/' . $userId . '/1');
         }
 
         $territories = $territoryRepository->findAll();
