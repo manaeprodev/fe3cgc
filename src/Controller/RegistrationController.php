@@ -76,7 +76,7 @@ class RegistrationController extends AbstractController
 
         if (!$user || $isFirstCo == null || !$id) {
             // L'utilisateur n'est pas connecté, rediriger vers la page de connexion par exemple
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_register');
         }
 
         $houses = $factionRepository->findThreeHouses();

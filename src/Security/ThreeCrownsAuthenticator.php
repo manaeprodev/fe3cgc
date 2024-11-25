@@ -56,7 +56,7 @@ class ThreeCrownsAuthenticator extends AbstractLoginFormAuthenticator
                 'isFirstCo' => $user->isFirstCo()
             ]);
         } else {
-                    $url = $this->urlGenerator->generate('app_menu', [
+            $url = $this->urlGenerator->generate('app_menu', [
             'id' => $user->getId(),
         ]);
         }

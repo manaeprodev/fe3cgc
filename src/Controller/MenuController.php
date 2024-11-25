@@ -18,6 +18,12 @@ class MenuController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(TerritoryRepository $territoryRepository): Response
     {
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        if($user->isFirstCo()) {
+            return $this->redirectToRoute('/register/finish/' . $userId . '/1');
+        }
 
         $territories = $territoryRepository->findAll();
         $count = $territoryRepository->countTerritories();
