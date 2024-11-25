@@ -3,17 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
-{% if app.user.faction.id == 1 %}
-    {% set accent = 'be' %}
-{% elseif app.user.faction.id == 2 %}
-    {% set accent = 'bl' %}
-{% elseif app.user.faction.id == 3 %}
-    {% set accent = 'gd' %}
-{% else %}
-    {% set accent = 'aw' %}
+{% if app.user.faction %}
+    {% if app.user.faction.id == 1 %}
+        {% set accent = 'be' %}
+    {% elseif app.user.faction.id == 2 %}
+        {% set accent = 'bl' %}
+    {% elseif app.user.faction.id == 3 %}
+        {% set accent = 'gd' %}
+    {% else %}
+        {% set accent = 'aw' %}
+    {% endif %}
 {% endif %}
-
 <input type="hidden" id="user-id" name="hiddenUsername" value="{{ app.user.id }}">
 <input type="hidden" id="username" name="hiddenUsername" value="{{ app.user.username }}">
 <input type="hidden" id="user-renown" name="hiddenUsername" value="{{ app.user.renown }}">
