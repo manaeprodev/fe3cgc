@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $avatar = null;
 
     #[ORM\Column]
-    private ?int $renown = 0;
+    private ?int $renown = 100;
 
     #[ORM\Column]
     private ?int $money = 1500;

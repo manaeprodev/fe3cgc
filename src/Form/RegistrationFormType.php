@@ -23,6 +23,32 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        $avatars = [
+            'Mercenary' => 'FE16_Generic_Male_Mercenary_Portrait.webp',
+            'Swordmaster' => 'FE16_generic_male_Swordmaster_Portrait.webp',
+            'Assassin' => 'FE16_Generic_Male_Assassin.webp',
+            'War Master' => 'Goneril_portrait.webp',
+            'Great Knight' => 'Chilon_portrait.webp',
+            'Grappler' => 'FE16_generic_grappler_portrait.webp',
+            'Trickster' => 'FE3HTrickster.webp',
+            'Sniper' => 'FEW3H_Berling_Portrait.webp',
+            'Bow Knight' => 'Riegan_portrait.webp',
+            'Holy Knight' => 'Daphnel_portrait.webp',
+            'Dark Knight' => 'Blaiddyd_portrait.webp',
+            'Pegasus Knight' => 'Dominic_portrait.webp',
+            'Falcon Knight' => 'Fraldarius_portrait.webp',
+            'Bishop' => 'FE16_generic_female_Bishop_Portrait.webp',
+            'Dark Bishop' => 'Odesse_Dark_Bishop_portrait.webp',
+            'Sage' => 'Gloucester_portrait.webp',
+            'Warlock' => 'FE16_Generic_Female_Warlock_Portrait.webp',
+            'Mortal Savant' => 'Mortal_Savant_Charon_portrait.webp',
+            'Gremory' => 'Gremory_portrait.webp',
+            'Dark Mage' => 'Myson_portrait.webp',
+        ];
+
+        $randomAvatar = array_rand($avatars);
+
         $builder
         ->add('username', TextType::class, [
             'label' => 'Username',
@@ -81,11 +107,12 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
-        ->add('avatar', FileType::class, [
-            'label' => 'Avatar (Image File)',
-            'mapped' => false,
-            'required' => false,
-            'attr' => ['accept' => 'image/*'],
+        ->add('avatar', ChoiceType::class, [
+            'label' => 'User Avatar',
+            'choices' => $avatars,
+            'multiple' => false, // Un seul choix possible
+            'required' => true,
+            'data' => $avatars[$randomAvatar], // Valeur par défaut aléatoire
         ])
         ->add('title', EntityType::class, [
             'label' => 'Class (Gives a small buff to your army)',

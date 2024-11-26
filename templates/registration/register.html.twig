@@ -21,7 +21,11 @@
             <li>{{ form_row(registrationForm.confirmPassword) }}</li><p style="font-style: italic;">Your email will be used to login.</p></li><br>
             <li>{{ form_row(registrationForm.username) }}</li>
 
-            <li>{{ form_row(registrationForm.avatar) }}</li>
+            <li>
+                {{ form_row(registrationForm.avatar) }}
+            </li>
+
+
             <li>{{ form_row(registrationForm.title) }}</li>
             <li>{{ form_row(registrationForm.agreeTerms) }}</li>
             <li><button type="submit" class="btn">Register</button></li>

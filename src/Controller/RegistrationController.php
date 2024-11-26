@@ -6,19 +6,20 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\FactionRepository;
 use App\Repository\UserRepository;
+use App\Security\ThreeCrownsAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserAuthenticatorInterface $userAuthenticator, ThreeCrownsAuthenticator $threeCrownsAuthenticator): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -31,37 +32,10 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
-            $file = $form->get('avatar')->getData();
-
-            if ($file) {
-                // Déterminer le nom du fichier (ou générer un nouveau nom)
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = uniqid().'.'.$file->guessExtension();
-    
-                // Définir le répertoire de destination
-                $destination = $this->getParameter('uploads_directory'); // 'uploads_directory' à configurer
-    
-                // Déplacer le fichier vers le répertoire de destination
-                try {
-                    $file->move($destination, $newFilename);
-                } catch (FileException $e) {
-                    // Gérer l'exception si quelque chose se passe mal
-                    $this->addFlash('error', 'There was a problem creating the unit.');
-
-                    return $this->redirectToRoute('app_register');
-                }
-    
-                // Enregistrer le chemin dans l'entité
-                $user->setAvatar($newFilename); // Assurez-vous que cette méthode existe dans votre entité
-            }
-
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('presentation', [
-                'id' => $user->getId(),
-                'isFirstCo' => $user->isFirstCo()
-            ]);
+            return $userAuthenticator->authenticateUser($user, $threeCrownsAuthenticator, $request);
             
         }
 
@@ -76,7 +50,9 @@ class RegistrationController extends AbstractController
 
         if (!$user || $isFirstCo == null || !$id) {
             // L'utilisateur n'est pas connecté, rediriger vers la page de connexion par exemple
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_login', [
+                'success' => true
+            ]);
         }
 
         $houses = $factionRepository->findThreeHouses();
