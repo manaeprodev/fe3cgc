@@ -211,6 +211,9 @@ class BattleController extends AbstractController
                 foreach($defenders as $defender) {
 
                     $user = $userRepository->findOneBy(['id' => $defender['id']]);
+
+                    $moneyCoef = 1;
+                    $renownCoef = 1;
                     
                     switch($unit['titleId']) {
                         case 4:
