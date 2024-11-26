@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block body %}
+{% if user.faction %}
+    {% if user.faction.id == 1 %}
+        {% set accent = 'be' %}
+    {% elseif user.faction.id == 2 %}
+        {% set accent = 'bl' %}
+    {% elseif user.faction.id == 3 %}
+        {% set accent = 'gd' %}
+    {% else %}
+        {% set accent = 'aw' %}
+    {% endif %}
+{% endif %}
+
+<div class="page-container">
+    <div class="leaderboard-container">
+
+    </div>
+    <nav class="sidebar-menu">
+        <ul>
+            <li>Logged in as : <img class="user-icon" src="/uploads/{{ user.avatar }}"> {{ user.username }}</li>
+            <li>
+                <img class="leader-presentation" src="/uploads/{{ user.avatar }}">
+                <p title="Gold">🪙 {{ user.money }}</p>
+                <p title="Renown">✨ {{ user.renown }}</p><br>
+                <p title="{{ user.title.name | default('No class found')  }} : {{ user.title.bonusLabel | default('')}}">
+                    Class : {{ user.title.name | default('None')  }}
+                    {% if user.title is not null %}
+                        {% if user.title.level == 1 %}
+                        ⭐
+                        {% elseif user.title.level == 2 %}
+                        ⭐⭐
+                        {% elseif user.title.level == 3 %}
+                        ⭐⭐⭐
+                        {% endif %}
+                    {% endif %}
+                </p><br>
+            </li>
+            <li><a href="#">My Unit</a></li>
+            <li><a href="#">My Faction : {{ user.faction.name }}</a></li><br>
+            <li>
+        </ul>
+        <ul>
+            <li><p>🛠️ Miscellaneous</p></li>
+            <li><a href="{{ path('app_leaderboard') }}">Leaderboard</a></li>
+            <li><a href="{{ path('app_help') }}">How it works...</a></li>
+            <li><a href="{{ path('app_menu') }}">↩️ Back to Map</a></li>
+            <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
+        </ul>
+
+    </nav>
+</div>
+{% endblock %}

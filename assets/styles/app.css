@@ -49,7 +49,7 @@
 }
 
 /* Carte */
-.map-container {
+.map-container, .leaderboard-container {
     flex: 1; /* Prend tout l'espace restant */
     display: flex;
     justify-content: center;
@@ -149,7 +149,7 @@
         padding: 10px;
     }
 
-    .map-container {
+    .map-container, .leaderboard-container {
         flex: 1;
         height: calc(100vh - 100px); /* Ajuste la hauteur pour le menu */
     }
@@ -373,8 +373,8 @@
 .leader-presentation-tiny {
     display: block;
     left: 0;
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto;
     border-radius: 50%;
     border: 2px solid #d4af37;
@@ -387,7 +387,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
 #leaderSpeech {
     font-family: 'Cinzel Decorative', serif;
-    font-size: 16px;
+    font-size: 14.5px;
     font-style: italic;
     color: #d4af37;
     margin-right: 30px;
@@ -765,4 +765,34 @@ path:hover {
 
 .house-accent-6 {
     border: 3px solid #3cd437;
+}
+
+#countdown-text {
+    font-family: 'Cinzel', serif; /* Une police avec une touche médiévale */
+    font-size: 18px;
+    color: #bfb68f; /* Une couleur dorée douce */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Ombre subtile pour un effet gravé */
+    background: linear-gradient(90deg, #3a2e1e, #1f1b16); /* Fond sombre avec un effet de parchemin */
+    padding: 10px 15px;
+    border: 2px solid #705d40; /* Bordure avec une teinte cuir / bois */
+    border-radius: 8px; /* Bords légèrement arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Ombre externe */
+    width: fit-content; /* Ajuste la largeur à son contenu */
+    margin: 10px auto;
+}
+
+#countdown {
+    color: #e8d098; /* Doré lumineux pour les accents */
+    font-family: 'Uncial Antiqua', cursive; /* Une police manuscrite médiévale pour un effet décoratif */
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre plus marquée pour le texte accentué */
+    border-bottom: 2px solid #e8d098; /* Soulignement doré pour un effet élégant */
+}
+
+
+/* Ajout d'un effet hover pour le texte accentué */
+#countdown:hover {
+    color: #ffd700; /* Accentuation dorée lumineuse */
+    border-bottom-color: #ffd700; /* Soulignement en accord */
+    transition: color 0.3s ease-in-out, border-bottom-color 0.3s ease-in-out;
 }

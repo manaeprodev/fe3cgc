@@ -51,7 +51,7 @@ class ActionController extends AbstractController
                 $battle->setTerritoryId($territory);
                 $battle->setStatus(1);
                 $battle->setStartDateTime(new \DateTime());
-                $battle->setEndDateTime((new \DateTime())->modify('+2 days'));
+                $battle->setEndDateTime((new \DateTime())->modify('+5 minutes'));
                 $battle->setAttackerFactionId($faction);
 
                 $emi->persist($battle);

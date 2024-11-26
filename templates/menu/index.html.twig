@@ -65,11 +65,14 @@
                 <img class="leader-presentation-tiny" src="/resources/{{ app.user.faction.leaderAvatar }}"><br>
                 <p id="leaderSpeech">{{ app.user.faction.leaderSpeech }}</p>
             </li>
+            <li>
+                <p id="countdown-text">Next reset in : <b id="countdown"></b></p>
+            </li>
         </ul>
         <ul>
             <li><p>🛠️ Miscellaneous</p></li>
-            <li><a href="{{ path('app_user_index') }}">Leaderboard</a></li>
-            <li><a href="#">How it works...</a></li>
+            <li><a href="{{ path('app_leaderboard') }}">Leaderboard</a></li>
+            <li><a href="{{ path('app_help') }}">How it works...</a></li>
             <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
         </ul>
     </nav>
@@ -102,6 +105,37 @@
 <meta name="csrf-token" content="{{ csrf_token('menu_status') }}">
 
     <script>
+
+        function updateCountdown() {
+            const now = new Date(); // Heure actuelle
+            const nextHour = new Date();
+            nextHour.setHours(now.getHours() + 1, 0, 0, 0); // Prochaine heure pile
+
+            const remainingTime = nextHour - now; // Temps restant en millisecondes
+
+            if (remainingTime <= 0) {
+                location.reload(); // Rafraîchir la page à la fin du compte à rebours
+                return;
+            }
+
+            // Conversion en minutes et secondes
+            const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+            const seconds = Math.floor((remainingTime / 1000) % 60);
+
+            // Formatage pour afficher "MM:SS"
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+
+            // Mise à jour de l'affichage
+            document.getElementById('countdown').textContent = 
+                `${formattedMinutes}:${formattedSeconds}`;
+
+            // Relancer la mise à jour chaque seconde
+            setTimeout(updateCountdown, 1000);
+        }
+
+        // Initialisation du compte à rebours
+        updateCountdown();
         // Ajouter des interactions aux zones
         const paths = document.querySelectorAll('path');
         const tooltip = document.createElement('div');
