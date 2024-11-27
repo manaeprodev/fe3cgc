@@ -30,7 +30,7 @@
             <li>
                 <img class="leader-presentation" src="/uploads/{{ app.user.avatar }}">
                 <p title="Gold">🪙 {{ app.user.money }}</p>
-                <p title="Renown">✨ {{ app.user.renown }}</p><br>
+                <p title="Renown">✨ {{ app.user.renown }}</p>
                 <p title="{{ app.user.title.name | default('No class found')  }} : {{ app.user.title.bonusLabel | default('')}}">
                     Class : {{ app.user.title.name | default('None')  }}
                     {% if app.user.title is not null %}
@@ -44,9 +44,6 @@
                     {% endif %}
                 </p><br>
             </li>
-            <li><a href="#">My Unit</a></li>
-            <li><a href="#">My Faction : {{ app.user.faction.name }}</a></li><br>
-            <li>
         </ul>
         <ul>
             <li><p>🗺️ State of Fódlan </p></li>
@@ -71,6 +68,8 @@
         </ul>
         <ul>
             <li><p>🛠️ Miscellaneous</p></li>
+            <li><a href="#">My Unit</a></li>
+            <li><a href="#">My Faction : {{ app.user.faction.name }}</a></li>
             <li><a href="{{ path('app_leaderboard') }}">Leaderboard</a></li>
             <li><a href="{{ path('app_help') }}">How it works...</a></li>
             <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>

@@ -950,3 +950,68 @@ path:hover {
     font-size: 1.5rem;
     margin-left: 0.5rem;
 }
+
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    justify-content: center;
+    background: #f4e4c1; /* Couleur parchemin */
+    border: 2px solid #8b5a2b; /* Bordure brun foncé */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-item a {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 16px;
+    font-family: "Cinzel", serif; /* Police d'écriture médiévale */
+    color: #5d3112; /* Couleur brun foncé */
+    text-decoration: none;
+    border: 2px solid #8b5a2b; /* Bordure */
+    background: #f9e6d1; /* Couleur claire */
+    border-radius: 8px;
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+}
+
+.pagination .page-item a:hover {
+    background-color: #d4c1a1; /* Parchemin légèrement plus foncé */
+    color: #3e1f0f; /* Brun plus intense */
+    transform: scale(1.1); /* Effet de zoom */
+}
+
+.pagination .page-item.disabled a {
+    color: #a58e79; /* Gris brun */
+    pointer-events: none;
+    background-color: #eae4d1;
+    border-color: #b8a48c;
+    transform: none; /* Pas d'effet */
+}
+
+.pagination .page-item.active a {
+    color: #fff;
+    background: linear-gradient(145deg, #6c4325, #8b5a2b); /* Effet doré/brun royal */
+    border-color: #5d3112;
+    pointer-events: none;
+}
+
+.pagination .page-item.active a:hover {
+    background: linear-gradient(145deg, #5d3112, #704224); /* Effet de surbrillance */
+    transform: none;
+}
+
+.pagination .page-item a span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.pagination .page-item a span[aria-hidden="true"] {
+    font-family: "Cinzel Decorative", serif; /* Une police plus ornementale */
+}
