@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <td><p style="font-size: 17px;"  class="leicester  {% if app.user.faction.id == 3 %}my-faction-gd{% endif %}">🟡 Leicester : {{ (count[2].count | default(0) / 58 * 100) | round }}%</p></td>
-                        <td><p style="font-size: 17px;">🟣 Others : {{ ((count[3].count | default(0) + count[4].count | default(0)) / 58 * 100) | round }}%%</p></td>
+                        <td><p style="font-size: 17px;">🟣 Others : {{ ((count[3].count | default(0) + count[4].count | default(0)) / 58 * 100) | round }}%</p></td>
                 </table>
             </li>
             <li class="image-container">
@@ -105,7 +105,26 @@
 <meta name="csrf-token" content="{{ csrf_token('menu_status') }}">
 
     <script>
+    function cleanUp() {
+        // Supprimer tous les écouteurs attachés à `paths`
+        const paths = document.querySelectorAll('path');
+        paths.forEach(path => {
+            path.replaceWith(path.cloneNode(true)); // Supprime les écouteurs en remplaçant le nœud
+        });
 
+        // Supprimer les tooltips ou éléments dynamiques ajoutés
+        const tooltip = document.querySelector('div#tooltip');
+        if (tooltip) tooltip.remove();
+
+        // Supprimer les éléments dynamiques
+        document.querySelectorAll(".generated-n").forEach(el => el.remove());
+
+        // Réinitialiser les listes
+        document.getElementById('defenders-list').innerHTML = '';
+        document.getElementById('attackers-list').innerHTML = '';
+    }
+    cleanUp();
+    (function () {
         function updateCountdown() {
             const now = new Date(); // Heure actuelle
             const nextHour = new Date();
@@ -434,5 +453,6 @@
             return "red-prc";
         }
     }
+    })();
     </script>
 {% endblock %}

@@ -57,6 +57,10 @@
     overflow: hidden;
 }
 
+.leaderboard-container {
+    flex-direction: column;
+}
+
 /* SVG (carte) */
 .map-container svg {
     width: 100%;
@@ -795,4 +799,154 @@ path:hover {
     color: #ffd700; /* Accentuation dorée lumineuse */
     border-bottom-color: #ffd700; /* Soulignement en accord */
     transition: color 0.3s ease-in-out, border-bottom-color 0.3s ease-in-out;
+}
+
+/* Table Container */
+#leaderboard {
+    width: 80%; /* Occupe toute la largeur disponible */
+    margin: 2rem auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border: 2px solid #b08968; /* Gold-brown medieval border */
+}
+
+/* Table Rows and Cells */
+.medieval-table th,
+.medieval-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+/* Table Head */
+.medieval-table thead {
+    background-color: #6d4c41; /* Rich brown header */
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.medieval-table th {
+    border: 1px solid #8d6e63;
+    font-size: 1.2rem;
+}
+
+/* Table Rows */
+.leaderboard-row {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.leaderboard-row:hover {
+    background-color: #eee; /* Highlight row */
+}
+
+.odd-row {
+    background-color: #f4ede3; /* Soft beige for odd rows */
+}
+
+.even-row {
+    background-color: #fff; /* White for even rows */
+}
+
+.leaderboard-row td {
+    border: 1px solid #d3c4a3; /* Soft brown border for rows */
+}
+
+/* Rank Column */
+.rank {
+    text-align: center;
+    font-weight: bold;
+    color: #4e342e; /* Dark brown for rank */
+    font-size: 1.3rem; /* Réduit la taille de la police */
+}
+
+/* Unit Column */
+.unit-avatar {
+    width: 40px; /* Réduit la taille de l'avatar */
+    height: 40px; /* Réduit la taille de l'avatar */
+    border-radius: 50%; /* Modern circular avatars */
+    border: 2px solid #8d6e63; /* Subtle border */
+    margin-right: 0.8rem; /* Réduit l'écart entre l'avatar et le texte */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.unit-name {
+    font-size: 1.1rem; /* Réduit la taille du nom */
+    font-weight: bold;
+    color: #2e2e2e;
+}
+
+.faction-icon {
+    width: 18px; /* Réduit la taille de l'icône de la faction */
+    height: 26px; /* Réduit la taille de l'icône de la faction */
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.unit-title {
+    font-style: italic;
+    color: #6d4c41;
+    margin: 0.4rem 0; /* Réduit les marges autour du titre */
+}
+
+.unit-position {
+    font-size: 0.85rem; /* Réduit la taille de la position */
+    color: #555;
+}
+
+/* Renown Column */
+.renown {
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.1rem; /* Réduit la taille de la police pour la colonne Renown */
+    color: #d3912f; /* Crimson red for renown */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #leaderboard {
+        width: 100%; /* Full width for smaller screens */
+        font-size: 0.85rem; /* Réduit la taille de la police globale pour les petits écrans */
+    }
+
+    .unit-avatar {
+        width: 35px; /* Plus petit avatar pour les petits écrans */
+        height: 35px; /* Plus petit avatar pour les petits écrans */
+    }
+
+    .rank {
+        font-size: 1rem; /* Réduit la taille de la police pour le rang */
+    }
+
+    .renown {
+        font-size: 0.9rem; /* Réduit la taille de la police pour la renommée */
+    }
+}
+
+#ld-title {
+    font-family: 'Cinzel', serif; /* Une police de caractères médiévale ou classique */
+    font-size: 2.8rem; /* Taille plus grande pour le titre */
+    font-weight: bold;
+    text-align: center;
+    color: #f5f0e1; /* Couleur claire pour un effet élégant, sur fond sombre */
+    background: linear-gradient(135deg, #4e342e, #3e2723); /* Dégradé subtil de brun pour rappeler l'aspect du bois vieilli */
+    border: 2px solid #8d6e63; /* Bordure en bois ou métal vieilli */
+    padding: 1rem 2rem; /* Espacement interne pour un effet de boîte */
+    border-radius: 12px; /* Coins légèrement arrondis pour une finition élégante */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Ombre douce pour créer de la profondeur */
+    text-transform: uppercase; /* Met le titre en majuscule pour un style plus imposant */
+}
+
+#ld-title:before {
+    content: "⚔️ "; /* Ajouter une petite icône médiévale avant le titre */
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+#ld-title:after {
+    content: " ⚔️"; /* Ajouter une petite icône médiévale après le titre */
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
 }

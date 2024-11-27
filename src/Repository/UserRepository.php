@@ -76,16 +76,58 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $result = $query->execute();
     }
 
-    public function getLeaderboard()
+    public function getLeaderboard(int $offset, int $limit)
+    {
+        // Supposons que $offset et $limit sont définis pour la pagination
+        $users = $this->createQueryBuilder('u')
+        ->join('u.faction', 'f')
+        ->join('u.title', 'ti')
+        ->select('
+            u.username,
+            u.avatar,
+            u.renown,
+            f.id AS factionId,
+            f.icon AS factionIcon,
+            ti.name AS title,
+            ti.id AS titleId,
+            ti.bonusLabel,
+            ti.miniLabel,
+            ti.level
+        ')
+        ->where('u.id NOT IN (:excludedIds)')
+        ->andWhere('u.firstCo = :firstCo')
+        ->setParameter('excludedIds', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46])
+        ->setParameter('firstCo', 0)
+        ->orderBy('u.renown', 'DESC')
+        ->setFirstResult($offset)
+        ->setMaxResults($limit)
+        ->getQuery()
+        ->getResult();
+
+        // Ajout du rang (rank) aux utilisateurs
+        $rankedUsers = [];
+        foreach ($users as $index => $user) {
+        $user['rank'] = $offset + $index + 1; // Le rang commence à $offset + 1
+        $rankedUsers[] = $user;
+        }
+
+        return $rankedUsers;
+
+    }
+
+    public function getTotalUsers()
     {
         return $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')  // Compte uniquement le nombre d'utilisateurs
             ->join('u.faction', 'f')
             ->join('u.title', 'ti')
-            ->select('u.username, u.avatar, u.renown, f.id as factionId, f.name as faction, ti.id as titleId, ti.name as title, ti.label')
-            ->andWhere('u.id not in (10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46)')
-            ->andWhere('u.firstCo = 0')
-            ->orderBy('u.renown desc')
-            ;
+            ->where('u.id NOT IN (:excludedIds)')
+            ->andWhere('u.firstCo = :firstCo')
+            ->setParameter('excludedIds', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46])
+            ->setParameter('firstCo', 0)
+            ->getQuery()
+            ->getSingleScalarResult();  // Retourne directement le nombre de résultats
+
     }
 
     //    /**
