@@ -38,7 +38,7 @@
                             
                             <p class="unit-name"><img src="/uploads/{{ user.avatar }}" alt="Avatar of {{ user.username }}" class="unit-avatar">
                                 {{ user.username }} 
-                                <img src="/resources/{{ user.factionIcon }}" alt="Faction Icon" class="faction-icon">
+                                <img title="{{ user.factionName }}" src="/resources/{{ user.factionIcon }}" alt="Faction Icon" class="faction-icon">
                             </p>
                             <p title="{{ user.bonusLabel }}"><i class="unit-title">{{ user.title }}</i>
                             {% if user.level is not null %}

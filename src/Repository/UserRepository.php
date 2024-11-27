@@ -87,6 +87,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             u.avatar,
             u.renown,
             f.id AS factionId,
+            f.name AS factionName,
             f.icon AS factionIcon,
             ti.name AS title,
             ti.id AS titleId,
