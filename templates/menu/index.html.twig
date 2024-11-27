@@ -53,12 +53,12 @@
             <li>
                 <table>
                     <tr>
-                        <td><p style="font-size: 17px;" class="adrestia {% if app.user.faction.id == 1 %}my-faction-be{% endif %}">🔴 Adrestia : {{ (count[0].count / 58 * 100) | round }}%</p></td>
-                        <td><p style="font-size: 17px;"  class="faerghus {% if app.user.faction.id == 2 %}my-faction-bl{% endif %}">🔵 Faerghus : {{ (count[1].count / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;" class="adrestia {% if app.user.faction.id == 1 %}my-faction-be{% endif %}">🔴 Adrestia : {{ (count[0].count | default(0) / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;"  class="faerghus {% if app.user.faction.id == 2 %}my-faction-bl{% endif %}">🔵 Faerghus : {{ (count[1].count | default(0) / 58 * 100) | round }}%</p></td>
                     </tr>
                     <tr>
-                        <td><p style="font-size: 17px;"  class="leicester  {% if app.user.faction.id == 3 %}my-faction-gd{% endif %}">🟡 Leicester : {{ (count[2].count / 58 * 100) | round }}%</p></td>
-                        <td><p style="font-size: 17px;">🟣 Others : {{ ((count[3].count + count[4].count) / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;"  class="leicester  {% if app.user.faction.id == 3 %}my-faction-gd{% endif %}">🟡 Leicester : {{ (count[2].count | default(0) / 58 * 100) | round }}%</p></td>
+                        <td><p style="font-size: 17px;">🟣 Others : {{ ((count[3].count | default(0) + count[4].count | default(0)) / 58 * 100) | round }}%%</p></td>
                 </table>
             </li>
             <li class="image-container">
