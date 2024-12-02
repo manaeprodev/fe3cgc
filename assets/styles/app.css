@@ -49,7 +49,7 @@
 }
 
 /* Carte */
-.map-container, .leaderboard-container {
+.map-container, .leaderboard-container, .profile-container {
     flex: 1; /* Prend tout l'espace restant */
     display: flex;
     justify-content: center;
@@ -57,7 +57,7 @@
     overflow: hidden;
 }
 
-.leaderboard-container {
+.leaderboard-container, .profile-container {
     flex-direction: column;
 }
 

@@ -131,6 +131,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     }
 
+    public function getUserTitleFamily(int $userId)
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.title', 't')
+            ->select('u.id, t.id, t.family')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

@@ -16,6 +16,17 @@ class TitleRepository extends ServiceEntityRepository
         parent::__construct($registry, Title::class);
     }
 
+    public function getPromotableClassesByUserTitleId(int $family)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id, t.name, t.family, t.bonusLabel, t.miniLabel, t.level, t.avatar')
+            ->andWhere('t.family = :family')
+            ->orWhere('t.level = 1')
+            ->setParameter('family', $family)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Title[] Returns an array of Title objects
     //     */

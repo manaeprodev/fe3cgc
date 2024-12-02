@@ -26,6 +26,12 @@ class Title
     #[ORM\Column(length: 255)]
     private ?string $miniLabel = null;
 
+    #[ORM\Column]
+    private ?int $family = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +81,30 @@ class Title
     public function setMiniLabel(string $miniLabel): static
     {
         $this->miniLabel = $miniLabel;
+
+        return $this;
+    }
+
+    public function getFamily(): ?int
+    {
+        return $this->family;
+    }
+
+    public function setFamily(int $family): static
+    {
+        $this->family = $family;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
