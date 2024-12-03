@@ -19,7 +19,7 @@ class TitleRepository extends ServiceEntityRepository
     public function getPromotableClassesByUserTitleId(int $family)
     {
         return $this->createQueryBuilder('t')
-            ->select('t.id, t.name, t.family, t.bonusLabel, t.miniLabel, t.level, t.avatar')
+            ->select('t.id, t.name, t.family, t.bonusLabel, t.miniLabel, t.level, t.avatar, t.price')
             ->andWhere('t.family = :family')
             ->orWhere('t.level = 1')
             ->setParameter('family', $family)

@@ -86,7 +86,7 @@ class MiscellaneousController extends AbstractController
                 $changeClasses[] = $item;
             }
         }
-
+        
         return $this->render('miscellaneous/profile.html.twig', [
             'user' => $user,
             'promotableClasses' => $promoClasses,

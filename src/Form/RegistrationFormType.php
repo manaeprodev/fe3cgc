@@ -120,9 +120,7 @@ class RegistrationFormType extends AbstractType
             'choice_label' => function (Title $title) {
                 return $title->getName() . " (" . $title->getMiniLabel() . ")";
             },
-            'required' => false,
-            'placeholder' => 'None',
-            'empty_data' => null,
+            'required' => true,
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('t')
                     ->where('t.level = :level')

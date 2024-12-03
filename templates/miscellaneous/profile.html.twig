@@ -58,36 +58,75 @@
 <meta name="csrf-token-profile" content="{{ csrf_token('profile') }}">
 <div class="page-container">
     <input id="hidden-user-avatar" hidden value="{{ user.avatar }}">
+    <input id="hidden-user-id" hidden value="{{ user.id }}">
     <div class="profile-container">
         <ul class="panel">
             <li>
                 <h1>My Unit</h1>
                 <div class="image-grid">
                 <!-- 20 image inputs -->
-                <input id="Blaiddyd_portrait.webp" type="image" src="/uploads/Blaiddyd_portrait.webp" alt="image1" onclick="sendImageName('Blaiddyd_portrait.webp', '{{ user.id }}')">
-                <input id="Chilon_portrait.webp" type="image" src="/uploads/Chilon_portrait.webp" alt="image2" onclick="sendImageName('Chilon_portrait.webp', '{{ user.id }}')">
-                <input id="Daphnel_portrait.webp" type="image" src="/uploads/Daphnel_portrait.webp" alt="image3" onclick="sendImageName('Daphnel_portrait.webp', '{{ user.id }}')">
-                <input id="Dominic_portrait.webp" type="image" src="/uploads/Dominic_portrait.webp" alt="image4" onclick="sendImageName('Dominic_portrait.webp', '{{ user.id }}')">
-                <input id="FE3HTrickster.webp" type="image" src="/uploads/FE3HTrickster.webp" alt="image5" onclick="sendImageName('FE3HTrickster.webp', '{{ user.id }}')">
+                    <input id="Blaiddyd_portrait.webp" type="image" src="/uploads/Blaiddyd_portrait.webp" alt="image1" onclick="sendImageName('Blaiddyd_portrait.webp', '{{ user.id }}')">
+                    <input id="Chilon_portrait.webp" type="image" src="/uploads/Chilon_portrait.webp" alt="image2" onclick="sendImageName('Chilon_portrait.webp', '{{ user.id }}')">
+                    <input id="Daphnel_portrait.webp" type="image" src="/uploads/Daphnel_portrait.webp" alt="image3" onclick="sendImageName('Daphnel_portrait.webp', '{{ user.id }}')">
+                    <input id="Dominic_portrait.webp" type="image" src="/uploads/Dominic_portrait.webp" alt="image4" onclick="sendImageName('Dominic_portrait.webp', '{{ user.id }}')">
+                    <input id="FE3HTrickster.webp" type="image" src="/uploads/FE3HTrickster.webp" alt="image5" onclick="sendImageName('FE3HTrickster.webp', '{{ user.id }}')">
 
-                <input id="FE16_generic_female_Bishop_Portrait.webp" type="image" src="/uploads/FE16_generic_female_Bishop_Portrait.webp" alt="image6" onclick="sendImageName('FE16_generic_female_Bishop_Portrait.webp', '{{ user.id }}')">
-                <input id="FE16_Generic_Female_Warlock_Portrait.webp" type="image" src="/uploads/FE16_Generic_Female_Warlock_Portrait.webp" alt="image7" onclick="sendImageName('FE16_Generic_Female_Warlock_Portrait.webp', '{{ user.id }}')">
-                <input id="FE16_generic_grappler_portrait.webp" type="image" src="/uploads/FE16_generic_grappler_portrait.webp" alt="image8" onclick="sendImageName('FE16_generic_grappler_portrait.webp', '{{ user.id }}')">
-                <input id="FE16_Generic_Male_Assassin.webp" type="image" src="/uploads/FE16_Generic_Male_Assassin.webp" alt="image9" onclick="sendImageName('FE16_Generic_Male_Assassin.webp', '{{ user.id }}')">
-                <input id="FE16_Generic_Male_Mercenary_Portrait.webp" type="image" src="/uploads/FE16_Generic_Male_Mercenary_Portrait.webp" alt="image10" onclick="sendImageName('FE16_Generic_Male_Mercenary_Portrait.webp', '{{ user.id }}')">
+                    <input id="FE16_generic_female_Bishop_Portrait.webp" type="image" src="/uploads/FE16_generic_female_Bishop_Portrait.webp" alt="image6" onclick="sendImageName('FE16_generic_female_Bishop_Portrait.webp', '{{ user.id }}')">
+                    <input id="FE16_Generic_Female_Warlock_Portrait.webp" type="image" src="/uploads/FE16_Generic_Female_Warlock_Portrait.webp" alt="image7" onclick="sendImageName('FE16_Generic_Female_Warlock_Portrait.webp', '{{ user.id }}')">
+                    <input id="FE16_generic_grappler_portrait.webp" type="image" src="/uploads/FE16_generic_grappler_portrait.webp" alt="image8" onclick="sendImageName('FE16_generic_grappler_portrait.webp', '{{ user.id }}')">
+                    <input id="FE16_Generic_Male_Assassin.webp" type="image" src="/uploads/FE16_Generic_Male_Assassin.webp" alt="image9" onclick="sendImageName('FE16_Generic_Male_Assassin.webp', '{{ user.id }}')">
+                    <input id="FE16_Generic_Male_Mercenary_Portrait.webp" type="image" src="/uploads/FE16_Generic_Male_Mercenary_Portrait.webp" alt="image10" onclick="sendImageName('FE16_Generic_Male_Mercenary_Portrait.webp', '{{ user.id }}')">
 
-                <input id="FE16_generic_male_Swordmaster_Portrait.webp" type="image" src="/uploads/FE16_generic_male_Swordmaster_Portrait.webp" alt="image11" onclick="sendImageName('FE16_generic_male_Swordmaster_Portrait.webp', '{{ user.id }}')">
-                <input id="FEW3H_Berling_Portrait.webp" type="image" src="/uploads/FEW3H_Berling_Portrait.webp" alt="image12" onclick="sendImageName('FEW3H_Berling_Portrait.webp', '{{ user.id }}')">
-                <input id="Fraldarius_portrait.webp" type="image" src="/uploads/Fraldarius_portrait.webp" alt="image13" onclick="sendImageName('Fraldarius_portrait.webp', '{{ user.id }}')">
-                <input id="Gloucester_portrait.webp" type="image" src="/uploads/Gloucester_portrait.webp" alt="image14" onclick="sendImageName('Gloucester_portrait.webp', '{{ user.id }}')">
-                <input id="Goneril_portrait.webp" type="image" src="/uploads/Goneril_portrait.webp" alt="image15" onclick="sendImageName('Goneril_portrait.webp', '{{ user.id }}')">
+                    <input id="FE16_generic_male_Swordmaster_Portrait.webp" type="image" src="/uploads/FE16_generic_male_Swordmaster_Portrait.webp" alt="image11" onclick="sendImageName('FE16_generic_male_Swordmaster_Portrait.webp', '{{ user.id }}')">
+                    <input id="FEW3H_Berling_Portrait.webp" type="image" src="/uploads/FEW3H_Berling_Portrait.webp" alt="image12" onclick="sendImageName('FEW3H_Berling_Portrait.webp', '{{ user.id }}')">
+                    <input id="Fraldarius_portrait.webp" type="image" src="/uploads/Fraldarius_portrait.webp" alt="image13" onclick="sendImageName('Fraldarius_portrait.webp', '{{ user.id }}')">
+                    <input id="Gloucester_portrait.webp" type="image" src="/uploads/Gloucester_portrait.webp" alt="image14" onclick="sendImageName('Gloucester_portrait.webp', '{{ user.id }}')">
+                    <input id="Goneril_portrait.webp" type="image" src="/uploads/Goneril_portrait.webp" alt="image15" onclick="sendImageName('Goneril_portrait.webp', '{{ user.id }}')">
 
-                <input id="Gremory_portrait.webp" type="image" src="/uploads/Gremory_portrait.webp" alt="image16" onclick="sendImageName('Gremory_portrait.webp', '{{ user.id }}')">
-                <input id="Mortal_Savant_Charon_portrait.webp" type="image" src="/uploads/Mortal_Savant_Charon_portrait.webp" alt="image17" onclick="sendImageName('Mortal_Savant_Charon_portrait.webp', '{{ user.id }}')">
-                <input id="Myson_portrait.webp" type="image" src="/uploads/Myson_portrait.webp" alt="image18" onclick="sendImageName('Myson_portrait.webp', '{{ user.id }}')">
-                <input id="Odesse_Dark_Bishop_portrait.webp" type="image" src="/uploads/Odesse_Dark_Bishop_portrait.webp" alt="image19" onclick="sendImageName('Odesse_Dark_Bishop_portrait.webp'), '{{ user.id }}'">
-                <input id="Riegan_portrait.webp" type="image" src="/uploads/Riegan_portrait.webp" alt="image20" onclick="sendImageName('Riegan_portrait.webp'), '{{ user.id }}'">
-            </div>
+                    <input id="Gremory_portrait.webp" type="image" src="/uploads/Gremory_portrait.webp" alt="image16" onclick="sendImageName('Gremory_portrait.webp', '{{ user.id }}')">
+                    <input id="Mortal_Savant_Charon_portrait.webp" type="image" src="/uploads/Mortal_Savant_Charon_portrait.webp" alt="image17" onclick="sendImageName('Mortal_Savant_Charon_portrait.webp', '{{ user.id }}')">
+                    <input id="Myson_portrait.webp" type="image" src="/uploads/Myson_portrait.webp" alt="image18" onclick="sendImageName('Myson_portrait.webp', '{{ user.id }}')">
+                    <input id="Odesse_Dark_Bishop_portrait.webp" type="image" src="/uploads/Odesse_Dark_Bishop_portrait.webp" alt="image19" onclick="sendImageName('Odesse_Dark_Bishop_portrait.webp'), '{{ user.id }}'">
+                    <input id="Riegan_portrait.webp" type="image" src="/uploads/Riegan_portrait.webp" alt="image20" onclick="sendImageName('Riegan_portrait.webp'), '{{ user.id }}'">
+                </div>
+                <div class="current-path-container">
+                    <h2 class="class-title">Current Class Path</h2>
+                    <div class="promo-list">
+                        {% for promoClass in promotableClasses %}
+                        <div class="one-promo">
+                            <button id="{{ promoClass.id }}"
+                                class="promo-button {% if user.title.level == promoClass.level %}is-unit-class{% endif %}" 
+                                data-price="{{ promoClass.price|number_format(0, '.', ',') }}"
+                                {% if 
+                                    (user.title.level == 1 and promoClass.level == 3) or 
+                                    (user.title.level == 2 and promoClass.level == 1) or
+                                    (user.title.level == 3 and promoClass.level == 1) or
+                                    (user.title.level == 3 and promoClass.level == 2) or
+                                    (user.title.level == promoClass.level)
+                                %}
+                                    disabled
+                                {% endif %}>
+                                <img class="title-avatar" src="/uploads/{{ promoClass.avatar }}">{{ promoClass.name }}
+                            </button>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="change-class-container">
+                    <h2 class="class-title">Change Class</h2>
+                    <div class="change-list">
+                        {% for changeClass in changeableClasses %}
+                        <div class="one-change">
+                            <button id="{{ changeClass.id }}" class="change-button"
+                                data-price="{{ changeClass.price|number_format(0, '.', ',') }}">
+                                <img class="title-avatar" src="/uploads/{{ changeClass.avatar }}">{{ changeClass.name }}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </li>
 
             <li>
@@ -161,8 +200,53 @@
             }
         });
     } 
-    (function () {
 
-    })
+    // Ajoute des onClick listeners aux boutons dans la section Current Class Path
+    document.querySelectorAll('.promo-button').forEach(button => {
+        button.addEventListener('click', () => {
+            // Récupère l'ID du bouton
+            var buttonId = button.id;
+            var currentUser = document.getElementById("hidden-user-id").value;
+            console.log('Promo button clicked, ID:', buttonId);
+            console.log('User ID:', currentUser);
+            // Appelle une fonction spécifique pour les boutons promotionnels
+            handlePromoButtonClick(buttonId, currentUser);
+        });
+    });
+
+    // Ajoute des onClick listeners aux boutons dans la section Change Class
+    document.querySelectorAll('.change-button').forEach(button => {
+        button.addEventListener('click', () => {
+            // Récupère l'ID du bouton
+            var buttonId = button.id;
+            var currentUser = document.getElementById("hidden-user-id").value;
+            console.log('Change button clicked, ID:', buttonId);
+            console.log('User ID:', currentUser);
+            // Appelle une fonction spécifique pour les boutons de changement de classe
+            handlePromoButtonClick(buttonId, currentUser);
+        });
+    });
+
+    // Fonction appelée lorsqu'un bouton promo est cliqué
+    function handlePromoButtonClick(buttonId, userId) {
+        $.ajax({
+            url: '/misc/update/class',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-Token': csrfTokenProfile,
+            },
+            data: JSON.stringify({ titleId: buttonId, unit: unitId }),
+            success: function(response) {
+                document.querySelectorAll(".selected").forEach(element => { element.classList.remove('selected') });
+                document.getElementById(imageName).classList.add('selected');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error sending image name:', error);
+            }
+        });
+    }
+
 </script>
 {% endblock %}

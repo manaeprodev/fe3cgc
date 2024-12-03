@@ -1015,3 +1015,113 @@ path:hover {
 .pagination .page-item a span[aria-hidden="true"] {
     font-family: "Cinzel Decorative", serif; /* Une police plus ornementale */
 }
+
+.class-title {
+    font-size: 24px;
+    text-align: center;
+    color: #f4e1c1; /* Bright gold */
+    border-bottom: 2px solid #d4af37;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+/* Layout for promotableClasses */
+.current-path-container, .change-class-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.promo-list, .change-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+/* Styles pour la liste horizontale */
+.promo-list, .changeable-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Styles des boutons */
+.promo-button, .change-button {
+    background: linear-gradient(to bottom, #dbc79c, #a57e52);
+    border: 2px solid #5a3e1b;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    text-shadow: 1px 1px 2px #000;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.promo-button:hover, .change-button:hover {
+    background: #bca070;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+/* Bouton désactivé */
+.promo-button:disabled, .change-button:disabled {
+    background: #6b5840;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Indicateur de progression (flèches entre les boutons) */
+.promo-list .one-promo:not(:last-child)::after {
+    content: '→';
+    font-size: 20px;
+    color: #f4e1c1;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Info-bulle pour le prix */
+.promo-button::after, .change-button::after {
+    content: attr(data-price) "🪙";
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-family: 'Cinzel', serif;
+}
+
+.promo-button:hover::after, .change-button:hover::after {
+    display: block;
+}
+
+/* Désactiver l'effet hover pour les boutons désactivés */
+.promo-button:disabled:hover::after {
+    display: none; /* Supprime l'info-bulle */
+}
+
+.promo-button:disabled:hover {
+    transform: none; /* Pas d'agrandissement */
+    box-shadow: none; /* Pas d'ombre supplémentaire */
+    background: #6b5840; /* Maintenir l'apparence du bouton désactivé */
+    cursor: not-allowed; /* Conserver le curseur interdit */
+}
+
+.title-avatar {
+    vertical-align: middle;
+    margin-right: 5px;
+}
