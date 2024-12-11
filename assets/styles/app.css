@@ -1125,3 +1125,96 @@ path:hover {
     vertical-align: middle;
     margin-right: 5px;
 }
+
+#confirm-popup {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    width: 600px;
+    background: linear-gradient(145deg, #c4a484, #8c6d47);
+    color: #2c1b0c;
+    border: 5px solid #5e3b1d;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    font-family: 'Garamond', serif;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+#confirm-popup.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+#confirm-popup h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #422a15;
+    text-shadow: 1px 1px 0px #d7ba91;
+}
+
+#confirm-popup p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #372710;
+}
+
+#confirm-popup b {
+    font-weight: bold;
+    color: #7d5019;
+}
+
+#confirm-popup button {
+    background: linear-gradient(145deg, #764c24, #422a15);
+    color: #e4c097;
+    border: 2px solid #5e3b1d;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#confirm-popup button:hover {
+    background: linear-gradient(145deg, #8c6d47, #5e3b1d);
+    transform: translateY(-2px);
+}
+
+#confirm-popup button:active {
+    transform: translateY(2px);
+}
+
+#cancelButton {
+    background: linear-gradient(145deg, #5e3b1d, #2f1a0c);
+    color: #f2d6ba;
+    margin-left: 10px;
+}
+
+/* Ajout de motifs décoratifs */
+#confirm-popup:before, #confirm-popup:after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('https://www.example.com/ornament.png') no-repeat center;
+    background-size: contain;
+}
+
+#confirm-popup:before {
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#confirm-popup:after {
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}

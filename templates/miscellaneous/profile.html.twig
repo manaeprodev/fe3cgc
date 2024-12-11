@@ -59,6 +59,7 @@
 <div class="page-container">
     <input id="hidden-user-avatar" hidden value="{{ user.avatar }}">
     <input id="hidden-user-id" hidden value="{{ user.id }}">
+    <input id="hidden-user-gold" hidden value="{{ user.money|number_format(0, '.', ',') }}">
     <div class="profile-container">
         <ul class="panel">
             <li>
@@ -97,6 +98,8 @@
                             <button id="{{ promoClass.id }}"
                                 class="promo-button {% if user.title.level == promoClass.level %}is-unit-class{% endif %}" 
                                 data-price="{{ promoClass.price|number_format(0, '.', ',') }}"
+                                data-title="{{ promoClass.name }}"
+                                data-label="{{ promoClass.bonusLabel }}"
                                 {% if 
                                     (user.title.level == 1 and promoClass.level == 3) or 
                                     (user.title.level == 2 and promoClass.level == 1) or
@@ -120,21 +123,15 @@
                         {% for changeClass in changeableClasses %}
                         <div class="one-change">
                             <button id="{{ changeClass.id }}" class="change-button"
-                                data-price="{{ changeClass.price|number_format(0, '.', ',') }}">
+                                data-price="{{ changeClass.price|number_format(0, '.', ',') }}"
+                                data-title="{{ changeClass.name }}"
+                                data-label="{{ changeClass.bonusLabel }}">
                                 <img class="title-avatar" src="/uploads/{{ changeClass.avatar }}">{{ changeClass.name }}
                             </button>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-            </li>
-
-            <li>
-                <h1>My Faction</h1>
-            </li>
-
-            <li>
-                <h1>My Account</h1>
             </li>
         </ul>
     </div>
@@ -169,15 +166,37 @@
             <li><a href="{{ path('app_menu') }}">↩️ Back to Map</a></li>
             <li><a href="{{ path('app_logout') }}">🚪Logout</a></li>
         </ul>
-
     </nav>
+</div>
+<div class="confirm-popup" id="confirm-popup">
+    <h1 id="promote-to">Promote to <b id="class-name"></b> ?</h1>
+    <p id="bonus-p">Bonus : <i id="class-label"></i></p>
+    <p id="class-price-p">Price : 🪙<b id="class-price"></b></p>
+    <p id="user-balance-p">Balance : 🪙<s><b id="user-balance"></b></s> → 🪙<b id="new-balance"></b></p>
+    <button id="action" class="promote-button">PROMOTE!</button>
+    <button id="cancelButton">CANCEL</button>
 </div>
 
 <script>
 
     var csrfTokenProfile = document.querySelector('meta[name="csrf-token-profile"]').getAttribute('content');
     var currentAvatar = document.getElementById("hidden-user-avatar");
+
     var highlight = document.getElementById(currentAvatar.value);
+    var userId = document.getElementById("hidden-user-id").value;
+    var confirmPopup = document.getElementById("confirm-popup");
+    var className = document.getElementById("class-name");
+    var classPrice = document.getElementById("class-price");
+    var userBalance = document.getElementById("user-balance");
+    var userBalanceP = document.getElementById("user-balance-p");
+    var classLabel = document.getElementById("class-label");
+    var newBalance = document.getElementById("new-balance");
+    var cancelButton = document.getElementById("cancelButton");
+    var userGoldValue = document.getElementById("hidden-user-gold").value;
+    var promoteButton = document.getElementById("action");
+    
+
+    confirmPopup.classList.remove('visible');
 
     highlight.classList.add('selected');
     
@@ -201,16 +220,38 @@
         });
     } 
 
+    cancelButton.addEventListener('click', () => {
+        className.innerHTML="";
+        classPrice.innerHTML="";
+        classLabel.innerHTML="";
+        confirmPopup.classList.remove('visible');
+    });
+
+    promoteButton.addEventListener('click', () => {
+        console.log("Trying to promote!");
+        var currentUrl = new URL(window.location.href);
+        var classId = currentUrl.searchParams.get('class');
+        handlePromoButtonClick(classId, userId);
+        console.log("Should have promoted!");
+    });
+
     // Ajoute des onClick listeners aux boutons dans la section Current Class Path
     document.querySelectorAll('.promo-button').forEach(button => {
         button.addEventListener('click', () => {
             // Récupère l'ID du bouton
             var buttonId = button.id;
+            var currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('class', buttonId);
+            window.history.replaceState({}, '', currentUrl);
             var currentUser = document.getElementById("hidden-user-id").value;
-            console.log('Promo button clicked, ID:', buttonId);
-            console.log('User ID:', currentUser);
+            var dataPrice = button.dataset.price;
+            var classTitle = button.dataset.title;
+            var classLabel = button.dataset.label;
+            userBalanceP.innerHTML="Balance : 🪙<s><b id='user-balance'></b></s> → 🪙<b id='new-balance'></b>";
+
+            confirmPopup.classList.add("visible");
             // Appelle une fonction spécifique pour les boutons promotionnels
-            handlePromoButtonClick(buttonId, currentUser);
+            displayPopup(currentUser, dataPrice, classTitle, classLabel);
         });
     });
 
@@ -219,16 +260,48 @@
         button.addEventListener('click', () => {
             // Récupère l'ID du bouton
             var buttonId = button.id;
+            var currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('class', buttonId);
+            window.history.replaceState({}, '', currentUrl);
             var currentUser = document.getElementById("hidden-user-id").value;
-            console.log('Change button clicked, ID:', buttonId);
-            console.log('User ID:', currentUser);
+            var dataPrice = button.dataset.price;
+            var classTitle = button.dataset.title;
+            var classLabel = button.dataset.label;
+            userBalanceP.innerHTML="Balance : 🪙<s><b id='user-balance'></b></s> → 🪙<b id='new-balance'></b>";
+
+            confirmPopup.classList.add("visible");
             // Appelle une fonction spécifique pour les boutons de changement de classe
-            handlePromoButtonClick(buttonId, currentUser);
+            displayPopup(currentUser, dataPrice, classTitle, classLabel);
         });
     });
 
+    function displayPopup(userId, price, title, label) {
+        
+        var userBalance = document.getElementById("user-balance");
+        var newBalance = document.getElementById("new-balance");
+        className.innerHTML=title;
+        classPrice.innerHTML=price;
+        userBalance.innerHTML=userGoldValue;
+        classLabel.innerHTML=label;
+
+        if (userGoldValue >= price) {
+            promoteButton.removeAttribute("hidden");
+            let userGold = parseInt(userGoldValue.replace(/,/g, ''));
+            let itemPrice = parseInt(price.replace(/,/g, ''));
+            let newBalanceValue = userGold - itemPrice;
+            newBalance.innerHTML=newBalanceValue;
+        } else {
+            userBalance.innerHTML="";
+            userBalanceP.innerHTML="Balance : 🪙<b>" + userGoldValue + "</b><br><br><i>You do not have enough money to promote to this class.</i>";
+            promoteButton.setAttribute("hidden", true);
+            newBalance.innerHTML="";
+            action.disabled = true;
+        }
+        
+    }
+
     // Fonction appelée lorsqu'un bouton promo est cliqué
-    function handlePromoButtonClick(buttonId, userId) {
+    function handlePromoButtonClick(classId, userId) {
         $.ajax({
             url: '/misc/update/class',
             method: 'POST',
@@ -237,13 +310,12 @@
             headers: {
                 'X-CSRF-Token': csrfTokenProfile,
             },
-            data: JSON.stringify({ titleId: buttonId, unit: unitId }),
+            data: JSON.stringify({ class: classId, unit: userId }),
             success: function(response) {
-                document.querySelectorAll(".selected").forEach(element => { element.classList.remove('selected') });
-                document.getElementById(imageName).classList.add('selected');
+                console.log(response);
             },
             error: function(xhr, status, error) {
-                console.error('Error sending image name:', error);
+                console.error('Error when trying to update class:', error);
             }
         });
     }

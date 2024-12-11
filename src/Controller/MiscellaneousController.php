@@ -116,4 +116,49 @@ class MiscellaneousController extends AbstractController
 
         return new JsonResponse(['message' => 'Avatar successfully updated']);
     }
+
+    #[Route('/misc/update/class', name: 'app_update_class', methods: "POST")]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function updateClass(Request $request, Security $security, CsrfTokenManagerInterface $csrfTokenManagerInterface, EntityManagerInterface $emi, TitleRepository $titleRepository) : JsonResponse
+    {
+        $csrfToken = $request->headers->get('X-CSRF-Token');
+        if (!$csrfTokenManagerInterface->isTokenValid(new CsrfToken('profile', $csrfToken))) {
+            return new JsonResponse(['error' => 'Token CSRF invalide'], 400);
+        }
+
+        $user = $security->getUser();
+        $userClassId = $user->getTitle()->getId();
+        $userMoney = $user->getMoney();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $data = $request->toArray();
+
+        $classIdToUpdate = $data['class'];
+        
+        $class = $titleRepository->find($classIdToUpdate);
+        $classLevel = $class->getLevel();
+        $classPrice = $class->getPrice();
+
+        if($userMoney >= $classPrice) {
+            if ($classLevel == 1) {
+                $user->setTitle($class);
+                $user->setMoney($userMoney-$classPrice);
+                $emi->flush();
+                return new JsonResponse(['message' => 'Class successfully updated']);
+            } elseif ($userClassId + 1 == $classLevel) {
+                $user->setTitle($class);
+                $user->setMoney($userMoney-$classPrice);
+                $emi->flush();
+                return new JsonResponse(['message' => 'Class successfully updated']);
+            } 
+        } else {
+            return new JsonResponse(['message' => 'Error : Not enough money to promote.']);
+        }
+
+
+        return new JsonResponse(['message' => 'Error : Illegal class-promoting request.']);
+    }
 }
