@@ -29,8 +29,8 @@
             <li>Logged in as : <img class="user-icon" src="/uploads/{{ app.user.avatar }}"> {{ app.user.username }}</li>
             <li>
                 <img class="leader-presentation" src="/uploads/{{ app.user.avatar }}">
-                <p title="Gold">🪙 {{ app.user.money }}</p>
-                <p title="Renown">✨ {{ app.user.renown }}</p>
+                <p title="Gold">🪙 {{ app.user.money|number_format(0, '.', ',') }}</p>
+                <p title="Renown">✨ {{ app.user.renown|number_format(0, '.', ',') }}</p>
                 <p title="{{ app.user.title.name | default('No class found')  }} : {{ app.user.title.bonusLabel | default('')}}">
                     Class : {{ app.user.title.name | default('None')  }}
                     {% if app.user.title is not null %}

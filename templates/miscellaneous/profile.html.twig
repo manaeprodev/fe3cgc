@@ -141,8 +141,8 @@
             <li>Logged in as : <img class="user-icon" src="/uploads/{{ user.avatar }}"> {{ user.username }}</li>
             <li>
                 <img class="leader-presentation" src="/uploads/{{ user.avatar }}">
-                <p title="Gold">🪙 {{ user.money }}</p>
-                <p title="Renown">✨ {{ user.renown }}</p>
+                <p title="Gold">🪙 {{ user.money|number_format(0, '.', ',') }}</p>
+                <p title="Renown">✨ {{ user.renown|number_format(0, '.', ',') }}</p>
                 <p title="{{ user.title.name | default('No class found')  }} : {{ user.title.bonusLabel | default('')}}">
                     Class : {{ user.title.name | default('None')  }}
                     {% if user.title is not null %}
@@ -194,7 +194,15 @@
     var cancelButton = document.getElementById("cancelButton");
     var userGoldValue = document.getElementById("hidden-user-gold").value;
     var promoteButton = document.getElementById("action");
-    
+
+    var params = new URLSearchParams(window.location.search);
+
+    if (params.get('success') === '1') {
+        // Afficher une alerte avec un message personnalisé
+        alert('Congratulations! You have now changed class.');
+    } else if (params.get('success') === '0') {
+        alert('Error : There was an error while attempting to change class.');
+    }
 
     confirmPopup.classList.remove('visible');
 
@@ -283,13 +291,13 @@
         classPrice.innerHTML=price;
         userBalance.innerHTML=userGoldValue;
         classLabel.innerHTML=label;
-
-        if (userGoldValue >= price) {
+        
+        if (parseInt(userGoldValue) >= parseInt(price)) {
             promoteButton.removeAttribute("hidden");
             let userGold = parseInt(userGoldValue.replace(/,/g, ''));
             let itemPrice = parseInt(price.replace(/,/g, ''));
             let newBalanceValue = userGold - itemPrice;
-            newBalance.innerHTML=newBalanceValue;
+            newBalance.innerHTML=newBalanceValue.toLocaleString();
         } else {
             userBalance.innerHTML="";
             userBalanceP.innerHTML="Balance : 🪙<b>" + userGoldValue + "</b><br><br><i>You do not have enough money to promote to this class.</i>";
@@ -313,6 +321,11 @@
             data: JSON.stringify({ class: classId, unit: userId }),
             success: function(response) {
                 console.log(response);
+                if (response['success'] == true) {
+                    window.location.href = '/misc/profile?success=1';
+                } else {
+                    window.location.href = '/misc/profile?success=0';
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Error when trying to update class:', error);

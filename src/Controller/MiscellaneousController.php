@@ -141,24 +141,36 @@ class MiscellaneousController extends AbstractController
         $class = $titleRepository->find($classIdToUpdate);
         $classLevel = $class->getLevel();
         $classPrice = $class->getPrice();
-
+        
         if($userMoney >= $classPrice) {
             if ($classLevel == 1) {
                 $user->setTitle($class);
                 $user->setMoney($userMoney-$classPrice);
                 $emi->flush();
-                return new JsonResponse(['message' => 'Class successfully updated']);
-            } elseif ($userClassId + 1 == $classLevel) {
+                return new JsonResponse([
+                    'message' => 'Class successfully updated',
+                    'success' => true
+                ]);
+            } elseif ($userClassId + 1 == $classIdToUpdate) {
                 $user->setTitle($class);
                 $user->setMoney($userMoney-$classPrice);
                 $emi->flush();
-                return new JsonResponse(['message' => 'Class successfully updated']);
+                return new JsonResponse([
+                    'message' => 'Class successfully updated',
+                    'success' => true
+                ]);
             } 
         } else {
-            return new JsonResponse(['message' => 'Error : Not enough money to promote.']);
+            return new JsonResponse([
+                'message' => 'Error : Not enough money to promote.',
+                'success' => false
+            ]);
         }
 
 
-        return new JsonResponse(['message' => 'Error : Illegal class-promoting request.']);
+        return new JsonResponse([
+            'message' => 'Error : Illegal class-promoting request.',
+            'success' => false
+        ]);
     }
 }
