@@ -1191,7 +1191,7 @@ path:hover {
     transform: translateY(2px);
 }
 
-#cancelButton {
+#cancelButton-p {
     background: linear-gradient(145deg, #5e3b1d, #2f1a0c);
     color: #f2d6ba;
     margin-left: 10px;
